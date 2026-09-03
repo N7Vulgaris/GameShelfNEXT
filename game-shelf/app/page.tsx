@@ -12,7 +12,6 @@ export default function Home() {
           width={800}
           height={800}
         />
-        <h1 className="text-6xl">The Game Shelf</h1>
         <h2 className="text-2xl">Find your next favorite game here!</h2>
       </div>
     </div>
