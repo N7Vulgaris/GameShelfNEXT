@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { Gamepad2 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import SignInDialog from "./sign-in-dialog";
+import SignUpDialog from "./sign-up-dialog";
 
 //import { useState } from "react";
 
@@ -46,7 +47,7 @@ export default function Navbar() {
       </div>
       <div className="flex gap-x-2">
         <SignInDialog />
-        <Button variant="ghost">Sign Up</Button>
+        <SignUpDialog />
       </div>
     </nav>
   );

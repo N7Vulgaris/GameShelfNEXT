@@ -4,7 +4,9 @@ import { Button } from "./ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
+  DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
 import { Input } from "./ui/input";
@@ -18,14 +20,19 @@ export default function SignInDialog() {
       <DialogTrigger
         render={(props) => (
           <Button variant="ghost" {...props}>
-            Login
+            Sign In
           </Button>
         )}
       ></DialogTrigger>
 
       <DialogContent>
-        <div>
-          <h1 className="text-2xl font-bold mb-4">Sign In</h1>
+        <div className="space-y-4">
+          <div>
+            <DialogTitle className="text-2xl font-bold">Sign In</DialogTitle>
+            <DialogDescription>
+              Sign in using your credentials
+            </DialogDescription>
+          </div>
           <form className="space-y-4">
             <div className="space-y-4">
               <div className="space-y-2">
