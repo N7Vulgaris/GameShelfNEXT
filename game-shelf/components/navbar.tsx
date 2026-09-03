@@ -3,6 +3,8 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { Gamepad2 } from "lucide-react";
 import { usePathname } from "next/navigation";
+import SignInDialog from "./sign-in-dialog";
+
 //import { useState } from "react";
 
 export default function Navbar() {
@@ -43,7 +45,7 @@ export default function Navbar() {
         <Link href="/management">3</Link>
       </div>
       <div className="flex gap-x-2">
-        <Button variant="ghost">Login</Button>
+        <SignInDialog />
         <Button variant="ghost">Sign Up</Button>
       </div>
     </nav>
