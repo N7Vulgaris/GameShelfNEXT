@@ -1,22 +1,22 @@
 "use client";
 import Link from "next/link";
-import { Button } from "./ui/button";
-import { Gamepad2 } from "lucide-react";
+import { Gamepad2, Grid2x2, ClipboardPenLine, Settings } from "lucide-react";
 import { usePathname } from "next/navigation";
 import SignInDialog from "./sign-in-dialog";
 import SignUpDialog from "./sign-up-dialog";
-
-//import { useState } from "react";
+import { useSession, signOut } from "@/lib/auth/auth-client";
+import { Button } from "./ui/button";
 
 export default function Navbar() {
-  //const [activeLink, setActiveLink] = useState<string>("/");
   const pathName = usePathname();
+
+  const session = useSession();
 
   return (
     <nav className="flex h-[70px] justify-between bg-header text-white items-center px-4">
       <Link href="/" className="flex gap-x-2 items-center">
         <Gamepad2 />
-        <p className="font-semibold text-2xl">The Game Shelf</p>
+        <p className="font-semibold text-2xl md:flex hidden">The Game Shelf</p>
       </Link>
       {/* Desktop Navbar */}
       <div className="hidden md:flex gap-x-10 h-full items-stretch">
@@ -41,14 +41,36 @@ export default function Navbar() {
       </div>
       {/* Mobile Navbar */}
       <div className="flex md:hidden gap-x-6 h-full items-center">
-        <Link href="/viewGames">1</Link>
-        <Link href="/quiz">2</Link>
-        <Link href="/management">3</Link>
+        <Link href="/viewGames">
+          <Grid2x2 />
+        </Link>
+        <Link href="/quiz">
+          <ClipboardPenLine />
+        </Link>
+        <Link href="/management">
+          <Settings />
+        </Link>
       </div>
-      <div className="flex gap-x-2">
-        <SignInDialog />
-        <SignUpDialog />
-      </div>
+      {session.data?.user ? (
+        <div className="flex items-center gap-x-2">
+          <div>{session.data.user.name}</div>
+          <Button
+            onClick={async () => {
+              const result = await signOut();
+              if (!result.data) {
+                alert("Error signing out: " + result.error?.message);
+              }
+            }}
+          >
+            Sign Out
+          </Button>
+        </div>
+      ) : (
+        <div className="flex gap-x-2">
+          <SignInDialog />
+          <SignUpDialog />
+        </div>
+      )}
     </nav>
   );
 }
