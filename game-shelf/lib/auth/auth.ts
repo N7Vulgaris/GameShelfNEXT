@@ -1,5 +1,6 @@
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
+import { admin } from "better-auth/plugins";
 import { MongoClient } from "mongodb";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -31,6 +32,7 @@ export const auth = betterAuth({
       },
     },
   },
+  plugins: [admin()],
 });
 
 export async function getSession() {

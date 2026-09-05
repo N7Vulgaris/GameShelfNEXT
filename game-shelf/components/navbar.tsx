@@ -26,30 +26,38 @@ export default function Navbar() {
         >
           View Games
         </Link>
-        <Link
-          className={`items-center h-full flex hover:text-gray-400 ${pathName === "/quiz" ? "text-gray-400" : ""}`}
-          href="/quiz"
-        >
-          Quiz
-        </Link>
-        <Link
-          className={`items-center h-full flex hover:text-gray-400 ${pathName === "/management" ? "text-gray-400" : ""}`}
-          href="/management"
-        >
-          Management
-        </Link>
+        {session.data?.user && (
+          <Link
+            className={`items-center h-full flex hover:text-gray-400 ${pathName === "/quiz" ? "text-gray-400" : ""}`}
+            href="/quiz"
+          >
+            Quiz
+          </Link>
+        )}
+        {session.data?.user.role === "admin" && (
+          <Link
+            className={`items-center h-full flex hover:text-gray-400 ${pathName === "/management" ? "text-gray-400" : ""}`}
+            href="/management"
+          >
+            Management
+          </Link>
+        )}
       </div>
       {/* Mobile Navbar */}
       <div className="flex md:hidden gap-x-6 h-full items-center">
         <Link href="/viewGames">
           <Grid2x2 />
         </Link>
-        <Link href="/quiz">
-          <ClipboardPenLine />
-        </Link>
-        <Link href="/management">
-          <Settings />
-        </Link>
+        {session.data?.user && (
+          <Link href="/quiz">
+            <ClipboardPenLine />
+          </Link>
+        )}
+        {session.data?.user.role === "admin" && (
+          <Link href="/management">
+            <Settings />
+          </Link>
+        )}
       </div>
       {session.data?.user ? (
         <div className="flex items-center gap-x-2">
