@@ -15,7 +15,7 @@ export default function Navbar() {
   return (
     <nav className="flex h-[70px] justify-between bg-header text-white items-center px-4">
       <Link href="/" className="flex gap-x-2 items-center">
-        <Gamepad2 />
+        <Gamepad2 width={70} height={70} />
         <p className="font-semibold text-2xl md:flex hidden">The Game Shelf</p>
       </Link>
       {/* Desktop Navbar */}
@@ -46,16 +46,16 @@ export default function Navbar() {
       {/* Mobile Navbar */}
       <div className="flex md:hidden gap-x-6 h-full items-center">
         <Link href="/viewGames">
-          <Grid2x2 />
+          <Grid2x2 width={30} height={30} />
         </Link>
         {session.data?.user && (
           <Link href="/quiz">
-            <ClipboardPenLine />
+            <ClipboardPenLine width={30} height={30} />
           </Link>
         )}
         {session.data?.user.role === "admin" && (
           <Link href="/management">
-            <Settings />
+            <Settings width={30} height={30} />
           </Link>
         )}
       </div>
