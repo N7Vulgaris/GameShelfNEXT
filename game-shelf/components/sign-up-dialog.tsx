@@ -11,13 +11,43 @@ import {
 } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import { signUp } from "@/lib/auth/auth-client";
+//import { useRouter } from "next/navigation";
 
 export default function SignUpDialog() {
   const [open, setOpen] = useState(false);
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  //const router = useRouter();
+
+  async function handleSignUp(e: React.SubmitEvent) {
+    e.preventDefault();
+
+    setError("");
+    setLoading(true);
+
+    try {
+      const result = await signUp.email({
+        name,
+        email,
+        password,
+      });
+      if (result.error) {
+        setError(result.error.message ?? "Failed to sign up");
+      } else {
+        //router.push("/dashboard");
+        setOpen(false);
+      }
+    } catch (err) {
+      setError(`An unexpected error has ocurred: ${err}`);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -35,7 +65,12 @@ export default function SignUpDialog() {
             <DialogTitle className="text-2xl font-bold">Sign Up</DialogTitle>
             <DialogDescription>Create a new account</DialogDescription>
           </div>
-          <form className="space-y-4">
+          {error && (
+            <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
+              {error}
+            </div>
+          )}
+          <form className="space-y-4" onSubmit={handleSignUp}>
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label>Name</Label>
@@ -63,6 +98,7 @@ export default function SignUpDialog() {
                   onChange={(e) => setPassword(e.target.value)}
                   type="password"
                   placeholder="********"
+                  minLength={8}
                 />
               </div>
 
@@ -74,8 +110,12 @@ export default function SignUpDialog() {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" className="bg-blue-700 hover:bg-blue-900">
-                  Sign Up
+                <Button
+                  type="submit"
+                  className="bg-blue-700 hover:bg-blue-900"
+                  disabled={loading}
+                >
+                  {loading ? "Signing Up..." : "Sign Up"}
                 </Button>
               </DialogFooter>
             </div>
