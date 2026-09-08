@@ -2,10 +2,10 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen mx-auto container px-4">
-      <div className="mx-auto text-center font-semibold">
+    <div className="flex flex-col min-h-screen mx-auto container">
+      <div className="flex flex-col items-center justify-center font-semibold">
         <Image
-          className="my-2 shadow-xl h-auto"
+          className="my-2 shadow-xl w-full max-w-4xl h-auto"
           loading="eager"
           src="/images/gameBanner.jpg"
           alt="Games"

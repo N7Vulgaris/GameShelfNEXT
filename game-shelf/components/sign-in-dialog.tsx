@@ -11,7 +11,6 @@ import {
 } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-//import { useRouter } from "next/navigation";
 import { signIn } from "@/lib/auth/auth-client";
 
 export default function SignInDialog() {
@@ -21,8 +20,6 @@ export default function SignInDialog() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  //const router = useRouter();
 
   async function handleSignIn(e: React.SubmitEvent) {
     e.preventDefault();
@@ -38,7 +35,7 @@ export default function SignInDialog() {
       if (result.error) {
         setError(result.error.message ?? "Failed to sign in");
       } else {
-        //router.push("/dashboard");
+        setOpen(false);
       }
     } catch (err) {
       setError(`An unexpected error has ocurred: ${err}`);

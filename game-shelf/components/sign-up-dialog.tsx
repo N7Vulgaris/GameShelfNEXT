@@ -12,7 +12,6 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { signUp } from "@/lib/auth/auth-client";
-//import { useRouter } from "next/navigation";
 
 export default function SignUpDialog() {
   const [open, setOpen] = useState(false);
@@ -21,8 +20,6 @@ export default function SignUpDialog() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  //const router = useRouter();
 
   async function handleSignUp(e: React.SubmitEvent) {
     e.preventDefault();
@@ -39,7 +36,6 @@ export default function SignUpDialog() {
       if (result.error) {
         setError(result.error.message ?? "Failed to sign up");
       } else {
-        //router.push("/dashboard");
         setOpen(false);
       }
     } catch (err) {

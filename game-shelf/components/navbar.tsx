@@ -19,7 +19,7 @@ export default function Navbar() {
         <p className="font-semibold text-2xl md:flex hidden">The Game Shelf</p>
       </Link>
       {/* Desktop Navbar */}
-      <div className="hidden md:flex gap-x-10 h-full items-stretch">
+      <div className="hidden md:flex gap-x-10 h-full items-stretch font-semibold">
         <Link
           className={`items-center h-full flex hover:text-gray-400 ${pathName === "/viewGames" ? "text-gray-400" : ""}`}
           href="/viewGames"
