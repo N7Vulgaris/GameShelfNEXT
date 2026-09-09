@@ -1,4 +1,3 @@
-"use client";
 import GamesList from "@/components/games-list";
 import GamesSearchbar from "@/components/games-searchbar";
 
