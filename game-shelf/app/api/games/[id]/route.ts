@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+/* import { NextResponse } from "next/server";
 import clientPromise from "@/lib/db";
 
 interface RouteParams {
@@ -28,3 +28,4 @@ export async function GET(request: Request, { params }: RouteParams) {
     );
   }
 }
+ */

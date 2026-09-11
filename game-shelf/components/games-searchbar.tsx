@@ -11,14 +11,25 @@ import {
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 
-export default function GamesSearchbar() {
+interface GameSearchbarProps {
+  onSearch: (title: string) => void;
+  sortGames: (sortMethod: string) => void;
+}
+
+export default function GamesSearchbar({
+  onSearch,
+  sortGames,
+}: GameSearchbarProps) {
   return (
-    <div className="flex flex-row w-[70%] gap-2 h-12 pb-2.5 border-b-2 border-gray-200">
+    <div className="flex flex-row w-[70%] gap-2 h-12 mb-6 border-gray-200">
       <InputGroup className="items-center h-full border-2 border-black">
         <InputGroupAddon>
           <Search />
         </InputGroupAddon>
-        <InputGroupInput placeholder="Search..."></InputGroupInput>
+        <InputGroupInput
+          placeholder="Search..."
+          onChange={(e) => onSearch(e.target.value)}
+        ></InputGroupInput>
       </InputGroup>
       <DropdownMenu>
         <DropdownMenuTrigger
@@ -35,10 +46,18 @@ export default function GamesSearchbar() {
         <DropdownMenuContent>
           <DropdownMenuGroup>
             <DropdownMenuLabel>Sort</DropdownMenuLabel>
-            <DropdownMenuItem>Newest</DropdownMenuItem>
-            <DropdownMenuItem>Oldest</DropdownMenuItem>
-            <DropdownMenuItem>A-Z</DropdownMenuItem>
-            <DropdownMenuItem>Z-A</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => sortGames("newest")}>
+              Newest
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => sortGames("oldest")}>
+              Oldest
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => sortGames("az")}>
+              A-Z
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => sortGames("za")}>
+              Z-A
+            </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>

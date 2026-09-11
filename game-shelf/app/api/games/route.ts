@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+/* import { NextResponse } from "next/server";
 import clientPromise from "@/lib/db";
 
 export async function GET() {
@@ -17,3 +17,4 @@ export async function GET() {
     );
   }
 }
+ */
