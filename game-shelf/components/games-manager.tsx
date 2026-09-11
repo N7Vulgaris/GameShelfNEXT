@@ -3,7 +3,6 @@ import { Game as GameType } from "@/lib/models/models.types";
 import { useMemo, useState } from "react";
 import GamesSearchbar from "./games-searchbar";
 import GamesList from "./games-list";
-import game from "@/lib/models/game";
 
 export default function GamesManager({
   initialGames,
@@ -56,8 +55,9 @@ export default function GamesManager({
   }, [searchQuery, initialGames, sortMethod]);
 
   const handleSearch = (query: string) => setSearchQuery(query);
-
   const handleSort = (method: string) => setSortMethod(method);
+
+  //TODO: Switch from State Lifting (Game Manager Wrapper) to URL Search parameters for searching and sorting
 
   return (
     <div className="flex flex-col items-center w-full mt-16">
