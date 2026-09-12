@@ -1,6 +1,9 @@
 import { Game } from "@/lib/models/models.types";
 import Image from "next/image";
-import { Image as ImageIcon } from "lucide-react";
+import { DeleteIcon, Edit, Image as ImageIcon } from "lucide-react";
+import { useSession } from "@/lib/auth/auth-client";
+import { Button } from "./ui/button";
+import GameEditAndDelete from "./game-edit-delete";
 
 interface GameCardProps {
   game: Game;
@@ -9,6 +12,8 @@ interface GameCardProps {
 //TODO: Use Shadcn Aspect Ratio for image display?
 
 export default function GameCard({ game }: GameCardProps) {
+  const session = useSession();
+
   return (
     <div className="flex flex-col border-2 rounded-2xl border-gray-300 p-3">
       {game.coverImageUrl ? (
@@ -20,7 +25,7 @@ export default function GameCard({ game }: GameCardProps) {
         </div>
       )}
 
-      <div className="border rounded-2xl p-3 bg-gray-100 font-semibold h-full">
+      <div className="flex flex-col border rounded-2xl p-3 bg-gray-100 font-semibold h-full">
         <h2 className="border-b-2">Title: {game.title}</h2>
         <p className="border-b-2">Developer: {game.developer}</p>
         <p className="border-b-2">Publisher: {game.publisher}</p>
@@ -43,6 +48,7 @@ export default function GameCard({ game }: GameCardProps) {
             ))}
           </div>
         </div>
+        {session.data?.user && <GameEditAndDelete />}
       </div>
     </div>
   );

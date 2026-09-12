@@ -1,3 +1,4 @@
+import "server-only";
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { admin } from "better-auth/plugins";
@@ -21,17 +22,17 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
-  databaseHooks: {
+  /* databaseHooks: {
     user: {
       create: {
         after: async (user) => {
           if (user.id) {
-            //await initializeUserBoard(user.id);
+
           }
         },
       },
     },
-  },
+  }, */
   plugins: [admin()],
 });
 
