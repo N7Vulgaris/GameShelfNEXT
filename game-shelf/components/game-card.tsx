@@ -6,6 +6,8 @@ interface GameCardProps {
   game: Game;
 }
 
+//TODO: Use Shadcn Aspect Ratio for image display?
+
 export default function GameCard({ game }: GameCardProps) {
   return (
     <div className="flex flex-col border-2 rounded-2xl border-gray-300 p-3">
@@ -24,7 +26,7 @@ export default function GameCard({ game }: GameCardProps) {
         <p className="border-b-2">Publisher: {game.publisher}</p>
         <div className="border-b-2 flex flex-col">
           <p>Platform:</p>
-          <div className="">
+          <div className="grid grid-cols-2">
             {game.platform.map((pla, key) => (
               <p key={key}>{pla}</p>
             ))}
@@ -35,7 +37,7 @@ export default function GameCard({ game }: GameCardProps) {
         )}
         <div>
           <p>Genre:</p>
-          <div>
+          <div className="grid grid-cols-2">
             {game.genre.map((gen, key) => (
               <p key={key}>{gen}</p>
             ))}
