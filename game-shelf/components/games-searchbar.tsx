@@ -1,4 +1,4 @@
-import { ChevronDown, Plus, Search } from "lucide-react";
+import { ChevronDown, Search } from "lucide-react";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
 import {
   DropdownMenu,
@@ -24,8 +24,8 @@ export default function GamesSearchbar({
   const session = useSession();
 
   return (
-    <div className="flex flex-row w-[70%] gap-2 h-12 mb-6 border-gray-200">
-      <InputGroup className="items-center h-full border-2 border-black">
+    <div className="flex flex-row w-[70%] gap-2 h-12 mb-6 border-gray-200 rounded-2xl sticky top-17.5">
+      <InputGroup className="items-center h-full border-2 border-black bg-white">
         <InputGroupAddon>
           <Search />
         </InputGroupAddon>

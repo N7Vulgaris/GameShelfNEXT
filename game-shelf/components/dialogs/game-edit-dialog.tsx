@@ -14,6 +14,7 @@ import { Input } from "../ui/input";
 import { useState } from "react";
 import { Game } from "@/lib/models/models.types";
 import { updateVideogame } from "@/lib/actions/games";
+import { useRouter } from "next/navigation";
 
 interface GameEditDialogProps {
   game: Game;
@@ -32,6 +33,7 @@ export default function GameEditDialog({ game }: GameEditDialogProps) {
     genre: game.genre.join(", "),
     reviewScore: game.reviewScore?.toString(),
   });
+  const router = useRouter();
 
   async function handleUpdate(e: React.SubmitEvent) {
     e.preventDefault();
@@ -53,6 +55,7 @@ export default function GameEditDialog({ game }: GameEditDialogProps) {
 
       if (!result.error) {
         setIsOpen(false);
+        router.refresh();
       } else {
         setError(`An error occured while updating: ${result.error}`);
       }

@@ -22,6 +22,10 @@ export async function createVideogame(data: VideoGameData) {
     return { error: "Unauthorized" };
   }
 
+  if (session?.user.role !== "admin") {
+    return { error: "Unauthorized" };
+  }
+
   await connenctDB();
 
   const {
@@ -67,6 +71,10 @@ export async function deleteVideogame(id: string) {
     return { error: "Unathorized" };
   }
 
+  if (session?.user.role !== "admin") {
+    return { error: "Unauthorized" };
+  }
+
   const videogame = await Game.findById(id);
 
   if (!videogame) {
@@ -94,6 +102,10 @@ export async function updateVideogame(
   const session = await getSession();
 
   if (!session?.user) {
+    return { error: "Unauthorized" };
+  }
+
+  if (session?.user.role !== "admin") {
     return { error: "Unauthorized" };
   }
 

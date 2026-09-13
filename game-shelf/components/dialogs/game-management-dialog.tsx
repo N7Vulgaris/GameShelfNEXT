@@ -14,6 +14,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { useState } from "react";
 import { createVideogame } from "@/lib/actions/games";
+import { useRouter } from "next/navigation";
 
 const INITIAL_FORM_DATA = {
   title: "",
@@ -30,6 +31,7 @@ export default function GameManagementDialog() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [formData, setFormData] = useState(INITIAL_FORM_DATA);
   const [error, setError] = useState("");
+  const router = useRouter();
 
   async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
@@ -52,6 +54,7 @@ export default function GameManagementDialog() {
       if (!result.error) {
         setFormData(INITIAL_FORM_DATA);
         setIsOpen(false);
+        router.refresh();
       } else {
         console.error("Failed to create videogame", result.error);
         setError(`Failed to create videogame ${result.error}`);

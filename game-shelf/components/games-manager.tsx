@@ -34,19 +34,21 @@ export default function GamesManager({
     return [...games].sort((a, b) => {
       switch (sortMethod) {
         case "newest":
-          return b.title.localeCompare(a.title);
-        case "oldest":
-          return a.title.localeCompare(b.title);
-        case "az":
           return (
             new Date(b.releaseYear).getTime() -
             new Date(a.releaseYear).getTime()
           );
-        case "za":
+
+        case "oldest":
           return (
             new Date(a.releaseYear).getTime() -
             new Date(b.releaseYear).getTime()
           );
+
+        case "az":
+          return b.title.localeCompare(a.title);
+        case "za":
+          return a.title.localeCompare(b.title);
         default:
           break;
       }
@@ -63,7 +65,7 @@ export default function GamesManager({
     <div className="flex flex-col items-center w-full mt-16 mb-4 min-h-[50vh]">
       <GamesSearchbar onSearch={handleSearch} sortGames={handleSort} />
 
-      {filteredGames ? (
+      {filteredGames.length > 0 ? (
         <GamesList games={filteredGames} />
       ) : (
         <div className="flex flex-1 justify-center items-center">
