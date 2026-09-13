@@ -3,9 +3,9 @@ import Link from "next/link";
 import { Gamepad2, Grid2x2, ClipboardPenLine, Settings } from "lucide-react";
 import { usePathname } from "next/navigation";
 import SignInDialog from "./dialogs/sign-in-dialog";
-import SignUpDialog from "./sign-up-dialog";
 import { useSession, signOut } from "@/lib/auth/auth-client";
 import { Button } from "./ui/button";
+import SignUpDialog from "./dialogs/sign-up-dialog";
 
 export default function Navbar() {
   const pathName = usePathname();

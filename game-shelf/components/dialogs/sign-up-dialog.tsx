@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Button } from "./ui/button";
+import { signUp } from "@/lib/auth/auth-client";
 import {
   Dialog,
   DialogContent,
@@ -8,10 +8,10 @@ import {
   DialogFooter,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { signUp } from "@/lib/auth/auth-client";
+} from "../ui/dialog";
+import { Button } from "../ui/button";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
 
 export default function SignUpDialog() {
   const [open, setOpen] = useState(false);
