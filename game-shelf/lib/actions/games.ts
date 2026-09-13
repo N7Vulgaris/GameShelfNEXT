@@ -1,3 +1,5 @@
+"use server";
+
 import { getSession } from "../auth/auth";
 import connenctDB from "../db";
 import { Game } from "../models";
@@ -10,10 +12,10 @@ interface VideoGameData {
   developer: string;
   publisher: string;
   genre: string[];
-  reviewScore?: number;
+  reviewScore?: number | null;
 }
 
-export async function createJobApplication(data: VideoGameData) {
+export async function createVideogame(data: VideoGameData) {
   const session = await getSession();
 
   if (!session?.user) {

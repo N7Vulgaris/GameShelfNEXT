@@ -60,9 +60,16 @@ export default function GamesManager({
   //TODO: Switch from State Lifting (Game Manager Wrapper) to URL Search parameters for searching and sorting
 
   return (
-    <div className="flex flex-col items-center w-full mt-16">
+    <div className="flex flex-col items-center w-full mt-16 mb-4 min-h-[50vh]">
       <GamesSearchbar onSearch={handleSearch} sortGames={handleSort} />
-      <GamesList games={filteredGames} />
+
+      {filteredGames ? (
+        <GamesList games={filteredGames} />
+      ) : (
+        <div className="flex flex-1 justify-center items-center">
+          <p className="font-bold">No games in the database</p>
+        </div>
+      )}
     </div>
   );
 }

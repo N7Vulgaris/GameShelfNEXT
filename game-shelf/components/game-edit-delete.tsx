@@ -9,7 +9,8 @@ export default function GameEditAndDelete() {
         <DeleteIcon />
       </Button>
       <Button className="bg-blue-600">
-        Edit <Edit />
+        Edit
+        <Edit />
       </Button>
     </div>
   );

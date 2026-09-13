@@ -1,8 +1,7 @@
 import { Game } from "@/lib/models/models.types";
 import Image from "next/image";
-import { DeleteIcon, Edit, Image as ImageIcon } from "lucide-react";
+import { Image as ImageIcon } from "lucide-react";
 import { useSession } from "@/lib/auth/auth-client";
-import { Button } from "./ui/button";
 import GameEditAndDelete from "./game-edit-delete";
 
 interface GameCardProps {
@@ -37,6 +36,9 @@ export default function GameCard({ game }: GameCardProps) {
             ))}
           </div>
         </div>
+        <p className="border-b-2">
+          Release date: {game.releaseYear.toLocaleDateString("en-US")}
+        </p>
         {game.reviewScore && (
           <p className="border-b-2">Review score: {game.reviewScore}</p>
         )}
