@@ -59,3 +59,21 @@ export async function createVideogame(data: VideoGameData) {
 
   return { data: JSON.parse(JSON.stringify(videoGame)) };
 }
+
+export async function deleteVideogame(id: string) {
+  const session = await getSession();
+
+  if (!session?.user) {
+    return { error: "Unathorized" };
+  }
+
+  const videogame = await Game.findById(id);
+
+  if (!videogame) {
+    return { error: "Game not found" };
+  }
+
+  await Game.deleteOne({ _id: id });
+
+  return { success: true };
+}

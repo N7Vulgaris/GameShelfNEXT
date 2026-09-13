@@ -1,8 +1,7 @@
-import { ObjectId } from "mongodb";
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IGame extends Document {
-  _id: ObjectId;
+  _id: mongoose.Types.ObjectId;
   title: string;
   platform: string[];
   releaseYear: Date;

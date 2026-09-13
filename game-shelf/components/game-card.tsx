@@ -50,7 +50,7 @@ export default function GameCard({ game }: GameCardProps) {
             ))}
           </div>
         </div>
-        {session.data?.user && <GameEditAndDelete />}
+        {session.data?.user && <GameEditAndDelete game={game} />}
       </div>
     </div>
   );
