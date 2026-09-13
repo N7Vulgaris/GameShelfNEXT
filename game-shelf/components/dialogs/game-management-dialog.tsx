@@ -1,6 +1,6 @@
 "use client";
 import { Plus } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,9 +9,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
+} from "../ui/dialog";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
 import { useState } from "react";
 import { createVideogame } from "@/lib/actions/games";
 
@@ -78,6 +78,7 @@ export default function GameManagementDialog() {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add a new game:</DialogTitle>
+
           <DialogDescription>
             Fields markes with a * are required
           </DialogDescription>

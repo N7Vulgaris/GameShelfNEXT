@@ -10,7 +10,7 @@ import {
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { useSession } from "@/lib/auth/auth-client";
-import GameManagementDialog from "./game-management-dialog";
+import GameManagementDialog from "./dialogs/game-management-dialog";
 
 interface GameSearchbarProps {
   onSearch: (title: string) => void;

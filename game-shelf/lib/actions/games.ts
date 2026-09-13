@@ -12,7 +12,7 @@ interface VideoGameData {
   developer: string;
   publisher: string;
   genre: string[];
-  reviewScore?: number | null;
+  reviewScore?: number;
 }
 
 export async function createVideogame(data: VideoGameData) {
@@ -76,4 +76,49 @@ export async function deleteVideogame(id: string) {
   await Game.deleteOne({ _id: id });
 
   return { success: true };
+}
+
+export async function updateVideogame(
+  id: string,
+  updates: {
+    title: string;
+    platform: string[];
+    releaseYear: Date;
+    coverImageUrl?: string;
+    developer: string;
+    publisher: string;
+    genre: string[];
+    reviewScore?: number;
+  },
+) {
+  const session = await getSession();
+
+  if (!session?.user) {
+    return { error: "Unauthorized" };
+  }
+
+  const videogame = await Game.findById(id);
+
+  if (!videogame) {
+    return { error: "Job application not found" };
+  }
+
+  const { ...otherUpdates } = updates;
+
+  const updatesToApply: Partial<{
+    title: string;
+    platform: string[];
+    releaseYear: Date;
+    coverImageUrl?: string;
+    developer: string;
+    publisher: string;
+    genre: string[];
+    reviewScore?: number;
+  }> = otherUpdates;
+
+  const updated = await Game.findByIdAndUpdate(id, updatesToApply, {
+    new: true,
+  });
+
+  return { data: JSON.parse(JSON.stringify(updated)) };
 }

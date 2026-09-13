@@ -1,5 +1,5 @@
 import { DeleteIcon } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
+} from "../ui/dialog";
 import { useState } from "react";
 import { Game } from "@/lib/models/models.types";
 import { deleteVideogame } from "@/lib/actions/games";
