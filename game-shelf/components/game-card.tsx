@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Image as ImageIcon } from "lucide-react";
 import { useSession } from "@/lib/auth/auth-client";
 import GameEditAndDelete from "./game-edit-delete";
+import { usePathname } from "next/navigation";
 
 interface GameCardProps {
   game: Game;
@@ -12,6 +13,7 @@ interface GameCardProps {
 
 export default function GameCard({ game }: GameCardProps) {
   const session = useSession();
+  const pathname = usePathname();
 
   return (
     <div className="flex h-full flex-col border-2 rounded-2xl border-gray-300 p-3">
@@ -58,7 +60,7 @@ export default function GameCard({ game }: GameCardProps) {
             ))}
           </div>
         </div>
-        {session.data?.user.role === "admin" && (
+        {session.data?.user.role === "admin" && pathname !== "/viewGames" && (
           <GameEditAndDelete game={game} />
         )}
       </div>
