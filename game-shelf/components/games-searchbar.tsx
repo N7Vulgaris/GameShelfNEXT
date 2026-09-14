@@ -10,7 +10,7 @@ import {
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { useSession } from "@/lib/auth/auth-client";
-import GameManagementDialog from "./dialogs/game-management-dialog";
+import GameAddNewDialog from "./dialogs/game-add-new-dialog";
 
 interface GameSearchbarProps {
   onSearch: (title: string) => void;
@@ -64,7 +64,7 @@ export default function GamesSearchbar({
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
-      {session.data?.user && <GameManagementDialog />}
+      {session.data?.user && <GameAddNewDialog />}
     </div>
   );
 }

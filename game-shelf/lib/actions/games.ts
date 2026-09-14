@@ -1,8 +1,12 @@
 "use server";
 
+import { v2 as cloudinary } from "cloudinary";
 import { getSession } from "../auth/auth";
 import connenctDB from "../db";
 import { Game } from "../models";
+import { success } from "better-auth";
+
+cloudinary.config();
 
 interface VideoGameData {
   title: string;
@@ -41,16 +45,51 @@ export async function createVideogame(data: VideoGameData) {
 
   if (
     !title ||
-    !platform ||
+    !platform.length ||
     !releaseYear ||
     !developer ||
     !publisher ||
-    !genre
+    !genre.length
   ) {
     return { error: "Missing required fields" };
   }
 
-  const videoGame = await Game.create({
+  let finalCoverImageUrl = undefined;
+
+  try {
+    if (coverImageUrl && coverImageUrl.startsWith("data:image")) {
+      const uploadResult = await cloudinary.uploader.upload(coverImageUrl, {
+        folder: "game_covers",
+        quality: "auto",
+        fetch_format: "auto",
+        upload_preset: "game_covers_preset",
+      });
+
+      finalCoverImageUrl = uploadResult.secure_url;
+    }
+
+    const newGame = await Game.create({
+      title,
+      platform,
+      releaseYear,
+      developer,
+      publisher,
+      genre,
+      reviewScore,
+      coverImageUrl: finalCoverImageUrl,
+    });
+
+    return { success: true, data: JSON.parse(JSON.stringify(newGame)) };
+  } catch (error: unknown) {
+    console.log("Failed to upload new game:", error);
+
+    if (error instanceof Error) {
+      return { error: error.message };
+    }
+    return { error: "Failed to create game in database" };
+  }
+
+  /* const videoGame = await Game.create({
     title,
     platform,
     releaseYear,
@@ -61,7 +100,7 @@ export async function createVideogame(data: VideoGameData) {
     reviewScore: reviewScore || null,
   });
 
-  return { data: JSON.parse(JSON.stringify(videoGame)) };
+  return { data: JSON.parse(JSON.stringify(videoGame)) }; */
 }
 
 export async function deleteVideogame(id: string) {

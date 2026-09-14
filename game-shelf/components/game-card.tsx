@@ -14,17 +14,25 @@ export default function GameCard({ game }: GameCardProps) {
   const session = useSession();
 
   return (
-    <div className="flex flex-col border-2 rounded-2xl border-gray-300 p-3">
+    <div className="flex h-full flex-col border-2 rounded-2xl border-gray-300 p-3">
       {game.coverImageUrl ? (
-        <Image src={game.coverImageUrl} alt={"Game Cover"} />
+        <div className="relative w-auto h-80 -z-10">
+          <Image
+            src={game.coverImageUrl}
+            alt={"Game Cover"}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="rounded-2xl object-cover"
+          />
+        </div>
       ) : (
-        <div className="flex flex-col items-center justify-center">
-          <ImageIcon className="h-auto w-full" />
+        <div className="flex flex-col items-center justify-center w-full h-80">
+          <ImageIcon className="w-auto h-full object-cover" />
           No image
         </div>
       )}
 
-      <div className="flex flex-col border rounded-2xl p-3 bg-gray-100 font-semibold h-full">
+      <div className="flex flex-1 flex-col border rounded-2xl p-3 bg-gray-100 font-semibold">
         <h2 className="border-b-2">Title: {game.title}</h2>
         <p className="border-b-2">Developer: {game.developer}</p>
         <p className="border-b-2">Publisher: {game.publisher}</p>
