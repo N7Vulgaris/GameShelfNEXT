@@ -80,7 +80,7 @@ export default function GameAddNewDialog() {
 
       const result = await createVideogame(gameData);
 
-      if (!result.error) {
+      if (result.success) {
         setFormData(INITIAL_FORM_DATA);
         setIsOpen(false);
         router.refresh();

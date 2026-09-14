@@ -75,7 +75,7 @@ export default function GameEditDialog({ game }: GameEditDialogProps) {
         coverImageUrl: base64Image,
       });
 
-      if (!result.error) {
+      if (result.success) {
         setIsOpen(false);
         router.refresh();
       } else {

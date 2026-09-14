@@ -27,11 +27,11 @@ export default function GameDeleteDialog({ game }: GameDeleteDialogProps) {
     try {
       const result = await deleteVideogame(game._id);
 
-      if (result.error) {
-        console.error("Failed to delete videogame:", result.error);
-      } else {
+      if (result.success) {
         setIsOpen(false);
         router.refresh();
+      } else {
+        console.error("Failed to delete videogame:", result.error);
       }
     } catch (err) {
       console.error("Failed to move videogame: ", err);

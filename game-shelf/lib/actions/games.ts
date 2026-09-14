@@ -1,14 +1,20 @@
 "use server";
 
 import { v2 as cloudinary } from "cloudinary";
-import { getSession } from "../auth/auth";
+import mongoose from "mongoose";
 import connectDB from "../db";
 import { Game } from "../models";
-import mongoose from "mongoose";
+import {
+  ensureAdminAccess,
+  normalizeArray,
+  stringifyDocument,
+  uploadCoverImageIfNeeded,
+  validateGameData,
+} from "./games-helper";
 
 cloudinary.config();
 
-interface VideoGameData {
+export interface VideoGameData {
   title: string;
   platform: string[];
   releaseDate: Date;
@@ -20,208 +26,215 @@ interface VideoGameData {
   reviewScore?: number;
 }
 
-export async function createVideogame(data: VideoGameData) {
-  const session = await getSession();
+export type ActionResult<T = null> =
+  | { success: true; status: number; data: T }
+  | { success: false; status: number; error: string };
 
-  if (!session?.user) {
-    return { error: "Unauthorized. You are not logged in", status: 401 };
+export async function createVideogame(
+  data: VideoGameData,
+): Promise<ActionResult<unknown>> {
+  const authError = await ensureAdminAccess();
+
+  if (authError) {
+    return authError;
   }
-  if (session?.user.role !== "admin") {
-    return { error: "Unauthorized. You are not an admin", status: 401 };
+
+  const validationError = validateGameData(data);
+
+  if (validationError) {
+    return {
+      success: false,
+      status: 400,
+      error: validationError,
+    };
   }
 
   await connectDB();
 
-  const {
-    title,
-    platform,
-    releaseDate,
-    coverImageUrl,
-    developer,
-    publisher,
-    genre,
-    reviewScore,
-  } = data;
+  const normalizedData = {
+    ...data,
+    title: data.title.trim(),
+    developer: data.developer.trim(),
+    publisher: data.publisher.trim(),
+    platform: normalizeArray(data.platform),
+    genre: normalizeArray(data.genre),
+  };
 
-  if (!title) {
-    return { error: "Missing required field: title", status: 400 };
-  }
-  if (!platform.length) {
-    return { error: "Missing required field: platform", status: 400 };
-  }
-  if (!releaseDate) {
-    return { error: "Missing required field: release date", status: 400 };
-  }
-  if (!developer) {
-    return { error: "Missing required field: developer", status: 400 };
-  }
-  if (!publisher) {
-    return { error: "Missing required field: publisher", status: 400 };
-  }
-  if (!genre.length) {
-    return { error: "Missing required field: genre", status: 400 };
-  }
-
-  let finalCoverImageUrl = undefined;
-  let finalCoverId = undefined;
+  let uploadedCoverImage: { coverImageUrl?: string; coverImageId?: string } =
+    {};
 
   try {
-    if (coverImageUrl && coverImageUrl.startsWith("data:image")) {
-      const uploadResult = await cloudinary.uploader.upload(coverImageUrl, {
-        folder: "game_covers",
-        quality: "auto",
-        fetch_format: "auto",
-        upload_preset: "game_covers_preset",
-      });
-
-      finalCoverImageUrl = uploadResult.secure_url;
-      finalCoverId = uploadResult.public_id;
-    }
+    uploadedCoverImage = await uploadCoverImageIfNeeded(
+      normalizedData.coverImageUrl,
+    );
 
     const newGame = await Game.create({
-      title,
-      platform,
-      releaseDate,
-      developer,
-      publisher,
-      genre,
-      reviewScore,
-      coverImageUrl: finalCoverImageUrl,
-      coverImageId: finalCoverId,
+      ...normalizedData,
+      coverImageUrl: uploadedCoverImage.coverImageUrl,
+      coverImageId: uploadedCoverImage.coverImageId,
     });
 
     return {
       success: true,
       status: 200,
-      data: JSON.parse(JSON.stringify(newGame)),
+      data: stringifyDocument(newGame),
     };
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return { error: error.message };
+  } catch (error) {
+    if (uploadedCoverImage.coverImageId) {
+      try {
+        await cloudinary.uploader.destroy(uploadedCoverImage.coverImageId);
+      } catch {
+        console.error("Failed to roll back uploaded cover image.");
+      }
     }
-    return { error: "Failed to create game in database", status: 500 };
+
+    return {
+      success: false,
+      status: 500,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to create game in database",
+    };
   }
 }
 
-export async function deleteVideogame(id: string) {
-  const session = await getSession();
+export async function deleteVideogame(id: string): Promise<ActionResult<null>> {
+  const authError = await ensureAdminAccess();
 
-  if (!session?.user) {
-    return { error: "Unathorized" };
-  }
-  if (session?.user.role !== "admin") {
-    return { error: "Unauthorized" };
+  if (authError) {
+    return authError;
   }
 
   await connectDB();
 
   if (!mongoose.isValidObjectId(id)) {
-    return { error: "Id is not a valid mongoose id", status: 404 };
+    return {
+      success: false,
+      status: 404,
+      error: "Id is not a valid mongoose id",
+    };
   }
 
   const videogame = await Game.findById(id);
 
   if (!videogame) {
-    return { error: "Game does not exist in the database", status: 404 };
+    return {
+      success: false,
+      status: 404,
+      error: "Game does not exist in the database",
+    };
   }
 
-  if (videogame.coverImageId) {
-    await cloudinary.uploader.destroy(videogame.coverImageId);
-  }
-
-  await Game.deleteOne({ _id: id });
-
-  return { success: true, status: 200 };
-}
-
-export async function updateVideogame(
-  id: string,
-  updates: {
-    title: string;
-    platform: string[];
-    releaseDate: Date;
-    coverImageUrl?: string;
-    coverImageId?: string;
-    developer: string;
-    publisher: string;
-    genre: string[];
-    reviewScore?: number;
-  },
-) {
-  const session = await getSession();
-
-  if (!session?.user) {
-    return { error: "Unauthorized" };
-  }
-  if (session?.user.role !== "admin") {
-    return { error: "Unauthorized" };
-  }
-
-  await connectDB();
-
-  if (!mongoose.isValidObjectId(id)) {
-    return { error: "Id is not a valid mongoose id", status: 404 };
-  }
-
-  const videogame = await Game.findById(id);
-
-  if (!videogame) {
-    return { error: "Game does not exist in database", status: 404 };
-  }
-
-  const newCoverImage = updates.coverImageUrl;
-  const hasNewCoverImage = newCoverImage?.startsWith("data:image");
-  let finalCoverImageUrl: string | undefined;
-  let finalCoverId: string | undefined;
-
-  if (hasNewCoverImage && newCoverImage) {
-    const uploadResult = await cloudinary.uploader.upload(
-      newCoverImage,
-      {
-        folder: "game_covers",
-        quality: "auto",
-        fetch_format: "auto",
-        upload_preset: "game_covers_preset",
-      },
-    );
-
-    finalCoverImageUrl = uploadResult.secure_url;
-    finalCoverId = uploadResult.public_id;
+  try {
+    await Game.deleteOne({ _id: id });
 
     if (videogame.coverImageId) {
       await cloudinary.uploader.destroy(videogame.coverImageId);
     }
+
+    return {
+      success: true,
+      status: 200,
+      data: null,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      status: 500,
+      error: error instanceof Error ? error.message : "Failed to delete game",
+    };
+  }
+}
+
+export async function updateVideogame(
+  id: string,
+  updates: VideoGameData,
+): Promise<ActionResult<unknown>> {
+  const authError = await ensureAdminAccess();
+
+  if (authError) {
+    return authError;
   }
 
-  const otherUpdates = { ...updates };
-  delete otherUpdates.coverImageId;
-  delete otherUpdates.coverImageUrl;
+  await connectDB();
 
-  const updatesToApply: Partial<{
-    title: string;
-    platform: string[];
-    releaseDate: Date;
-    coverImageUrl?: string;
-    coverImageId?: string;
-    developer: string;
-    publisher: string;
-    genre: string[];
-    reviewScore?: number;
-  }> = otherUpdates;
-
-  if (hasNewCoverImage) {
-    updatesToApply.coverImageUrl = finalCoverImageUrl;
-    updatesToApply.coverImageId = finalCoverId;
+  if (!mongoose.isValidObjectId(id)) {
+    return {
+      success: false,
+      status: 404,
+      error: "Id is not a valid mongoose id",
+    };
   }
 
-  const updated = await Game.findByIdAndUpdate(id, updatesToApply, {
-    new: true,
-    runValidators: true,
-  });
+  const videogame = await Game.findById(id);
 
-  return {
-    success: true,
-    status: 200,
-    data: JSON.parse(JSON.stringify(updated)),
-  };
+  if (!videogame) {
+    return {
+      success: false,
+      status: 404,
+      error: "Game does not exist in database",
+    };
+  }
+
+  const validationError = validateGameData(updates);
+
+  if (validationError) {
+    return {
+      success: false,
+      status: 400,
+      error: validationError,
+    };
+  }
+
+  let uploadedCoverImage: { coverImageUrl?: string; coverImageId?: string } =
+    {};
+
+  try {
+    uploadedCoverImage = await uploadCoverImageIfNeeded(updates.coverImageUrl);
+
+    const updatesToApply = {
+      ...updates,
+      title: updates.title.trim(),
+      developer: updates.developer.trim(),
+      publisher: updates.publisher.trim(),
+      platform: normalizeArray(updates.platform),
+      genre: normalizeArray(updates.genre),
+      coverImageUrl: uploadedCoverImage.coverImageUrl ?? updates.coverImageUrl,
+      coverImageId: uploadedCoverImage.coverImageId ?? updates.coverImageId,
+    };
+
+    const updated = await Game.findByIdAndUpdate(id, updatesToApply, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updated) {
+      throw new Error("Failed to update the game in the database");
+    }
+
+    if (uploadedCoverImage.coverImageId && videogame.coverImageId) {
+      await cloudinary.uploader.destroy(videogame.coverImageId);
+    }
+
+    return {
+      success: true,
+      status: 200,
+      data: stringifyDocument(updated),
+    };
+  } catch (error) {
+    if (uploadedCoverImage.coverImageId) {
+      try {
+        await cloudinary.uploader.destroy(uploadedCoverImage.coverImageId);
+      } catch {
+        console.error("Failed to roll back uploaded cover image.");
+      }
+    }
+
+    return {
+      success: false,
+      status: 500,
+      error: error instanceof Error ? error.message : "Failed to update game",
+    };
+  }
 }
