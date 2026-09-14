@@ -18,7 +18,7 @@ if (!global.mongoose) {
   global.mongoose = cached;
 }
 
-async function connenctDB() {
+async function connectDB() {
   if (!MONGODB_URI) {
     throw new Error(
       "Please define the MONGODB_URI environment variable inside .env",
@@ -49,4 +49,4 @@ async function connenctDB() {
   return cached.conn;
 }
 
-export default connenctDB;
+export default connectDB;

@@ -9,7 +9,6 @@ import SignUpDialog from "./dialogs/sign-up-dialog";
 
 export default function Navbar() {
   const pathName = usePathname();
-
   const session = useSession();
 
   return (

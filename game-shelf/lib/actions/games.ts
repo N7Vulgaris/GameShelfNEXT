@@ -2,9 +2,8 @@
 
 import { v2 as cloudinary } from "cloudinary";
 import { getSession } from "../auth/auth";
-import connenctDB from "../db";
+import connectDB from "../db";
 import { Game } from "../models";
-import { success } from "better-auth";
 
 cloudinary.config();
 
@@ -30,7 +29,7 @@ export async function createVideogame(data: VideoGameData) {
     return { error: "Unauthorized" };
   }
 
-  await connenctDB();
+  await connectDB();
 
   const {
     title,

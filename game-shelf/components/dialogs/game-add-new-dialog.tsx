@@ -93,33 +93,6 @@ export default function GameAddNewDialog() {
     } finally {
       setLoading(false);
     }
-
-    /*  try {
-      const result = await createVideogame({
-        ...formData,
-        platform: formData.platform
-          .split(",")
-          .map((plat) => plat.trim())
-          .filter((plat) => plat.length > 0),
-        genre: formData.genre
-          .split(",")
-          .map((gen) => gen.trim())
-          .filter((gen) => gen.length > 0),
-        releaseYear: new Date(formData.releaseYear),
-        reviewScore: Number(formData.reviewScore),
-      });
-
-      if (!result.error) {
-        setFormData(INITIAL_FORM_DATA);
-        setIsOpen(false);
-        router.refresh();
-      } else {
-        console.error("Failed to create videogame", result.error);
-        setError(`Failed to create videogame ${result.error}`);
-      }
-    } catch (err) {
-      console.log(err);
-    } */
   }
 
   return (
