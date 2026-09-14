@@ -47,7 +47,7 @@ export default function GameCard({ game }: GameCardProps) {
           </div>
         </div>
         <p className="border-b-2">
-          Release date: {game.releaseYear.toLocaleDateString("en-US")}
+          Release date: {game.releaseDate.toLocaleDateString("en-US")}
         </p>
         {game.reviewScore && (
           <p className="border-b-2">Review score: {game.reviewScore}</p>

@@ -3,8 +3,9 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface IGame extends Document {
   title: string;
   platform: string[];
-  releaseYear: Date;
+  releaseDate: Date;
   coverImageUrl?: string;
+  coverImageId?: string;
   developer: string;
   publisher: string;
   genre: string[];
@@ -22,8 +23,9 @@ const GameSchema = new Schema<IGame>(
         required: true,
       },
     ],
-    releaseYear: { type: Date, required: true },
+    releaseDate: { type: Date, required: true },
     coverImageUrl: { type: String },
+    coverImageId: { type: String },
     developer: { type: String, required: true },
     publisher: { type: String, required: true },
     genre: [

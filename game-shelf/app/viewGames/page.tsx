@@ -10,7 +10,7 @@ export async function getGames(): Promise<GameType[]> {
   const serializedGames: GameType[] = games.map((game: GameType) => ({
     ...game,
     _id: game._id.toString(),
-    releaseYear: new Date(game.releaseYear),
+    releaseDate: new Date(game.releaseDate),
   }));
 
   return serializedGames;

@@ -19,8 +19,9 @@ import { useRouter } from "next/navigation";
 const INITIAL_FORM_DATA = {
   title: "",
   platform: "",
-  releaseYear: "",
+  releaseDate: "",
   coverImageUrl: null as File | null,
+  coverImageId: "",
   developer: "",
   publisher: "",
   genre: "",
@@ -72,7 +73,7 @@ export default function GameAddNewDialog() {
           .split(",")
           .map((gen) => gen.trim())
           .filter((gen) => gen.length > 0),
-        releaseYear: new Date(formData.releaseYear),
+        releaseDate: new Date(formData.releaseDate),
         reviewScore: Number(formData.reviewScore),
         coverImageUrl: base64Image || undefined,
       };
@@ -84,12 +85,10 @@ export default function GameAddNewDialog() {
         setIsOpen(false);
         router.refresh();
       } else {
-        console.log("Failed to create videogame: ", result.error);
         setError(`Failed to create videogame: ${result.error}`);
       }
     } catch (err) {
-      console.log(err);
-      setError("An unexpected error ocurred");
+      setError(`An unexpected error ocurred: ${err}`);
     } finally {
       setLoading(false);
     }
@@ -172,9 +171,9 @@ export default function GameAddNewDialog() {
                 id="releaseDate"
                 type="date"
                 required
-                value={formData.releaseYear}
+                value={formData.releaseDate}
                 onChange={(e) =>
-                  setFormData({ ...formData, releaseYear: e.target.value })
+                  setFormData({ ...formData, releaseDate: e.target.value })
                 }
               ></Input>
             </div>
@@ -225,57 +224,6 @@ export default function GameAddNewDialog() {
                 className="hidden"
                 onChange={handleFileChange}
               ></Input>
-              {/*     <CldUploadWidget
-                uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
-                onSuccess={(results) => {
-                  if (results.info && typeof results.info !== "string") {
-                    const secureUrl = results.info.secure_url;
-                    setFormData((currentFormData) => ({
-                      ...currentFormData,
-                      coverImageUrl: secureUrl,
-                    }));
-                  }
-                }}
-              >
-                {({ open }) => (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => open()}
-                    className={`min-w-0 w-full whitespace-normal flex items-center justify-center gap-2 border-dashed border-2 py-6 
-                      ${formData.coverImageUrl ? "border-green-500 bg-green-50/50 dark:bg-green-950/20" : "border-gray-300"}`}
-                  >
-                    {formData.coverImageUrl ? (
-                      <div className="flex min-w-0 w-full items-center justify-center gap-2">
-                        <Check className="text-green-500 h-5 w-5" />
-                        <span className="min-w-0 truncate text-green-600 font-medium">
-                          Image uploaded successfully!
-                        </span>
-                      </div>
-                    ) : (
-                      <>
-                        <ImageIcon className="h-5 w-5 text-gray-400" />
-                        <span>Upload cover image</span>
-                      </>
-                    )}
-                  </Button>
-                )}
-              </CldUploadWidget>
-
-              {formData.coverImageUrl && (
-                <p className="min-w-0 max-w-full truncate text-[10px] text-muted-foreground italic px-1">
-                  Saved: {formData.coverImageUrl}
-                </p>
-              )} */}
-
-              {/*               <Input
-                id="image"
-                type="file"
-                value={formData.coverImageUrl}
-                onChange={(e) =>
-                  setFormData({ ...formData, coverImageUrl: e.target.value })
-                }
-              ></Input> */}
             </div>
           </div>
 

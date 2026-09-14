@@ -35,20 +35,20 @@ export default function GamesManager({
       switch (sortMethod) {
         case "newest":
           return (
-            new Date(b.releaseYear).getTime() -
-            new Date(a.releaseYear).getTime()
+            new Date(b.releaseDate).getTime() -
+            new Date(a.releaseDate).getTime()
           );
 
         case "oldest":
           return (
-            new Date(a.releaseYear).getTime() -
-            new Date(b.releaseYear).getTime()
+            new Date(a.releaseDate).getTime() -
+            new Date(b.releaseDate).getTime()
           );
 
         case "az":
-          return b.title.localeCompare(a.title);
-        case "za":
           return a.title.localeCompare(b.title);
+        case "za":
+          return b.title.localeCompare(a.title);
         default:
           break;
       }
@@ -69,7 +69,7 @@ export default function GamesManager({
         <GamesList games={filteredGames} />
       ) : (
         <div className="flex flex-1 justify-center items-center">
-          <p className="font-bold">No games in the database</p>
+          <p className="font-bold">No games found</p>
         </div>
       )}
     </div>

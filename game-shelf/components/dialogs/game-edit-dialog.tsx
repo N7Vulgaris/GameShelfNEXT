@@ -1,4 +1,6 @@
-import { Edit } from "lucide-react";
+"use client";
+
+import { Edit, ImageIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -11,7 +13,7 @@ import {
 } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Game } from "@/lib/models/models.types";
 import { updateVideogame } from "@/lib/actions/games";
 import { useRouter } from "next/navigation";
@@ -26,8 +28,8 @@ export default function GameEditDialog({ game }: GameEditDialogProps) {
   const [formData, setFormData] = useState({
     title: game.title,
     platform: game.platform.join(", "),
-    releaseYear: new Date(game.releaseYear).toISOString().split("T")[0],
-    coverImageUrl: game.coverImageUrl || "",
+    releaseDate: new Date(game.releaseDate).toISOString().split("T")[0],
+    coverImageUrl: null as File | null,
     developer: game.developer,
     publisher: game.publisher,
     genre: game.genre.join(", "),
@@ -35,10 +37,29 @@ export default function GameEditDialog({ game }: GameEditDialogProps) {
   });
   const router = useRouter();
 
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.[0]) {
+      setFormData({ ...formData, coverImageUrl: e.target.files[0] });
+    }
+  };
+
+  const convertFileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => resolve(fileReader.result as string);
+      fileReader.onerror = reject;
+    });
+  };
+
   async function handleUpdate(e: React.SubmitEvent) {
     e.preventDefault();
 
     try {
+      const base64Image = formData.coverImageUrl
+        ? await convertFileToBase64(formData.coverImageUrl)
+        : undefined;
+
       const result = await updateVideogame(game._id, {
         ...formData,
         platform: formData.platform
@@ -49,8 +70,9 @@ export default function GameEditDialog({ game }: GameEditDialogProps) {
           .split(",")
           .map((gen) => gen.trim())
           .filter((gen) => gen.length > 0),
-        releaseYear: new Date(formData.releaseYear),
+        releaseDate: new Date(formData.releaseDate),
         reviewScore: Number(formData.reviewScore),
+        coverImageUrl: base64Image,
       });
 
       if (!result.error) {
@@ -138,9 +160,9 @@ export default function GameEditDialog({ game }: GameEditDialogProps) {
                 id="releaseDate"
                 type="date"
                 required
-                value={formData.releaseYear}
+                value={formData.releaseDate}
                 onChange={(e) =>
-                  setFormData({ ...formData, releaseYear: e.target.value })
+                  setFormData({ ...formData, releaseDate: e.target.value })
                 }
               ></Input>
             </div>
@@ -170,14 +192,24 @@ export default function GameEditDialog({ game }: GameEditDialogProps) {
             </div>
 
             <div className="flex flex-col gap-y-2">
-              <Label htmlFor="image">Cover image</Label>
+              <Label htmlFor="imageCover">Cover image</Label>
+              <Label
+                htmlFor="imageCover"
+                className={`w-full flex items-center justify-center gap-2 border-dashed border-2 py-6 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-900 transition ${formData.coverImageUrl ? "border-green-500 bg-green-50/20" : "border-gray-300"}`}
+              >
+                <ImageIcon className="h-5 w-5 text-gray-400" />
+                <span className="text-sm font-medium">
+                  {game.coverImageUrl
+                    ? `Selected ${game.coverImageUrl}`
+                    : "Choose Cover Image File"}
+                </span>
+              </Label>
               <Input
-                id="image"
+                id="imageCover"
                 type="file"
-                value={formData.coverImageUrl}
-                onChange={(e) =>
-                  setFormData({ ...formData, coverImageUrl: e.target.value })
-                }
+                accept="image/*"
+                className="hidden"
+                onChange={handleFileChange}
               ></Input>
             </div>
           </div>
