@@ -9,8 +9,6 @@ interface GameCardProps {
   game: Game;
 }
 
-//TODO: Use Shadcn Aspect Ratio for image display?
-
 export default function GameCard({ game }: GameCardProps) {
   const session = useSession();
   const pathname = usePathname();

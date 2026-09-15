@@ -6,35 +6,97 @@
   <img src="https://img.shields.io/badge/MongoDB-Atlas-4EA94B?style=for-the-badge&logo=mongodb" alt="MongoDB" />
 </p>
 
-Game Shelf NEXT is a modern game discovery and catalog management app built with Next.js. It helps users browse a library of games, filter by platform and genre, and test their game knowledge through a lightweight quiz. Admin users can manage the catalog by adding, editing, and deleting game entries.
+Game Shelf is a full-stack game discovery and catalog management application. It gives players a focused way to browse, search, and sort a growing collection of games, while providing authenticated administrators with tools to maintain the catalog.
 
-It also serves as a before and after comparison with **The Game Shelf**, an older version of the same concept (https://github.com/N7Vulgaris/TheGameShelf)
+> A before-and-after evolution of [The Game Shelf](https://github.com/N7Vulgaris/TheGameShelf), rebuilt with a modern Next.js stack.
 
-## Overview
+## Highlights
 
-This project combines a responsive front end with a MongoDB-backed data layer and authentication flow. It is designed for game enthusiasts who want a simple, polished way to track and explore games in one place.
+- Built a responsive catalog experience with search, filtering, and sorting across multiple game attributes.
+- Added email/password authentication and protected management workflows with Better Auth.
+- Connected the application to MongoDB with Mongoose and server-side data access.
+- Integrated Cloudinary for game cover image uploads and lifecycle management.
+- Created a lightweight quiz flow that turns the catalog into an interactive discovery experience.
+
+## Screenshots
+
+Add project screenshots to `game-shelf/public/images/screenshots/` and replace the placeholders below. Recommended captures: the landing page, the searchable catalog, and the management or quiz experience.
+
+<table>
+  <tr>
+    <td align="center"><strong>Home page</strong><br><em>Add home.png</em></td>
+    <td align="center"><strong>Game catalog</strong><br><em>Add catalog.png</em></td>
+    <td align="center"><strong>Quiz or management</strong><br><em>Add quiz-or-management.png</em></td>
+  </tr>
+</table>
+
+<!-- Screenshot placeholders:
+- game-shelf/public/images/screenshots/home.png
+- game-shelf/public/images/screenshots/catalog.png
+- game-shelf/public/images/screenshots/quiz-or-management.png
+-->
 
 ## Features
 
-- Browse and search a live game catalog
-- Filter results by title, developer, publisher, genre, and platform
+- Browse a live game catalog with cover art and game metadata
+- Search and filter by title, developer, publisher, genre, and platform
 - Sort by newest, oldest, and alphabetical order
-- Sign in and sign up with email/password authentication
-- Access a quiz experience to test game knowledge
-- Manage games through an admin dashboard
-- Store game metadata in MongoDB
-- Use Cloudinary for cover images
+- Create an account and sign in with email/password authentication
+- Test game knowledge through an interactive quiz
+- Add, edit, and delete games from the management panel
+- Upload and remove cover images through Cloudinary
 
 ## Tech Stack
 
-- Next.js 16
-- React 19
-- TypeScript
-- Tailwind CSS
-- MongoDB + Mongoose
-- Better Auth
-- Cloudinary
-- shadcn/ui
+| Layer          | Tools                                          |
+| -------------- | ---------------------------------------------- |
+| Front end      | Next.js 16, React 19, TypeScript, Tailwind CSS |
+| UI             | shadcn/ui, Base UI, Lucide React               |
+| Data           | MongoDB, Mongoose                              |
+| Authentication | Better Auth                                    |
+| Media          | Cloudinary                                     |
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 20 or newer
+- A MongoDB database, such as MongoDB Atlas
+- A Cloudinary account for cover image uploads
+
+### Installation
+
+From the repository root:
+
+```bash
+cd game-shelf
+npm install
+```
+
+Create `game-shelf/.env.local` with the values for your local environment:
+
+```env
+MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>/<database>
+NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:3000
+CLOUDINARY_URL=cloudinary://<api_key>:<api_secret>@<cloud_name>
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Available Routes
+
+| Route         | Purpose                                           |
+| ------------- | ------------------------------------------------- |
+| `/`           | Landing page                                      |
+| `/viewGames`  | Browse, search, filter, and sort games            |
+| `/quiz`       | Start the game knowledge quiz                     |
+| `/management` | Manage catalog entries with an authorized account |
 
 ## Project Structure
 
@@ -64,31 +126,19 @@ game-shelf/
 └── README.md
 ```
 
-## Getting Started
-
-### How to run
-(Will add a link to a deployed version)
-
 ## Available Scripts
 
 ```bash
-npm run dev     # start local development server
-npm run build   # create production build
-npm run start   # run production build
-npm run lint    # run ESLint checks
+npm run dev     # Start the local development server
+npm run build   # Create a production build
+npm run start   # Run the production build
+npm run lint    # Run ESLint checks
 ```
 
-## Usage
+## Roadmap
 
-- Visit the home page to see the landing experience.
-- Go to the game browser to search and sort the catalog.
-- Sign up or sign in to unlock quiz-based discovery.
-- Use the management panel to add or update entries if you have admin access.
-
-## Things to improve and features to add
-
-- General UI polish
-- Better mobile responsiveness
-- A detailed videogame view
-- Allow the user to add games to a list of favorites
-- Switch from State Lifting to URL Search parameters when searching and sorting games
+- Add dedicated game detail pages
+- Let users save games to a favorites list
+- Move catalog search and sorting state into URL search parameters
+- Continue improving mobile responsiveness and visual polish
+- Let admins add / manage questions in the quiz

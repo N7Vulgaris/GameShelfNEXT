@@ -13,6 +13,7 @@ export default function Home() {
           height={800}
         />
         <h2 className="text-2xl">Find your next favorite game here!</h2>
+        <p>An online catalog for all you gaming needs</p>
       </div>
     </div>
   );

@@ -59,8 +59,6 @@ export default function GamesManager({
   const handleSearch = (query: string) => setSearchQuery(query);
   const handleSort = (method: string) => setSortMethod(method);
 
-  //TODO: Switch from State Lifting (Game Manager Wrapper) to URL Search parameters for searching and sorting
-
   return (
     <div className="flex flex-col items-center w-full mt-16 mb-4 min-h-[50vh]">
       <GamesSearchbar onSearch={handleSearch} sortGames={handleSort} />
