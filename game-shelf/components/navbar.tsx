@@ -12,7 +12,7 @@ export default function Navbar() {
   const session = useSession();
 
   return (
-    <nav className="flex h-[70px] justify-between bg-header text-white items-center px-4 sticky top-0">
+    <nav className="sticky top-0 z-50 flex h-[70px] items-center justify-between bg-header px-4 text-white">
       <Link href="/" className="flex gap-x-2 items-center">
         <Gamepad2 width={70} height={70} />
         <p className="font-semibold text-2xl md:flex hidden">The Game Shelf</p>

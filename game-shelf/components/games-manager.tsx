@@ -60,7 +60,7 @@ export default function GamesManager({
   const handleSort = (method: string) => setSortMethod(method);
 
   return (
-    <div className="flex flex-col items-center w-full mt-16 mb-4 min-h-[50vh]">
+    <div className="flex flex-col items-center w-[80%] mx-auto mt-16 mb-4 min-h-[50vh]">
       <GamesSearchbar onSearch={handleSearch} sortGames={handleSort} />
 
       {filteredGames.length > 0 ? (

@@ -3,29 +3,25 @@
 import { Game } from "@/lib/models/models.types";
 import Image from "next/image";
 import { Image as ImageIcon } from "lucide-react";
-import { useSession } from "@/lib/auth/auth-client";
 import GameEditAndDelete from "./game-edit-delete";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 interface GameCardProps {
   game: Game;
+  canManage: boolean;
 }
 
-export default function GameCard({ game }: GameCardProps) {
-  const session = useSession();
-  const pathname = usePathname();
-
+export default function GameCard({ game, canManage }: GameCardProps) {
   return (
     <div className="flex h-full flex-col border-2 rounded-2xl border-gray-300 p-3">
       <Link href={`/games/${game._id}`} className="flex flex-1 flex-col">
         {game.coverImageUrl ? (
-          <div className="relative w-auto h-80 -z-10">
+          <div className="relative h-80 w-full">
             <Image
               src={game.coverImageUrl}
               alt={`${game.title} cover`}
               fill
-              sizes="(max-width: 768px) 100vw, 50vw"
+              sizes="(max-width: 768px) 50vw, 25vw"
               className="rounded-2xl object-cover"
             />
           </div>
@@ -40,33 +36,12 @@ export default function GameCard({ game }: GameCardProps) {
           <h2 className="border-b-2">Title: {game.title}</h2>
           <p className="border-b-2">Developer: {game.developer}</p>
           <p className="border-b-2">Publisher: {game.publisher}</p>
-          <div className="border-b-2 flex flex-col">
-            <p>Platform:</p>
-            <div className="grid grid-cols-2">
-              {game.platform.map((pla, key) => (
-                <p key={key}>{pla}</p>
-              ))}
-            </div>
-          </div>
-          <p className="border-b-2">
-            Release date: {game.releaseDate.toLocaleDateString("en-US")}
-          </p>
-          {game.reviewScore && (
-            <p className="border-b-2">Review score: {game.reviewScore}</p>
-          )}
-          <div>
-            <p>Genre:</p>
-            <div className="grid grid-cols-2">
-              {game.genre.map((gen, key) => (
-                <p key={key}>{gen}</p>
-              ))}
-            </div>
+          <div className="flex flex-col">
+            <p>Platform: {game.platform[0]}...</p>
           </div>
         </div>
       </Link>
-      {session.data?.user.role === "admin" && pathname !== "/viewGames" && (
-        <GameEditAndDelete game={game} />
-      )}
+      {canManage && <GameEditAndDelete game={game} />}
     </div>
   );
 }

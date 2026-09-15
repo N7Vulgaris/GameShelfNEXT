@@ -26,7 +26,7 @@ export default function GamesSearchbar({
   const pathname = usePathname();
 
   return (
-    <div className="flex flex-row w-[70%] gap-2 h-12 mb-6 border-gray-200 rounded-2xl sticky top-17.5">
+    <div className="flex flex-row w-full gap-2 h-12 mb-6 border-gray-200 rounded-2xl sticky top-17.5">
       <InputGroup className="items-center h-full border-2 border-black bg-white">
         <InputGroupAddon>
           <Search />
