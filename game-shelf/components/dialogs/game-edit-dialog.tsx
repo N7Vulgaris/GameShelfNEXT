@@ -16,15 +16,19 @@ import { Input } from "../ui/input";
 import { ChangeEvent, useState } from "react";
 import { Game } from "@/lib/models/models.types";
 import { updateVideogame } from "@/lib/actions/games";
-import { useRouter } from "next/navigation";
 
 interface GameEditDialogProps {
   game: Game;
+  onSuccess: () => void;
 }
 
-export default function GameEditDialog({ game }: GameEditDialogProps) {
+export default function GameEditDialog({
+  game,
+  onSuccess,
+}: GameEditDialogProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [error, setError] = useState("");
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [formData, setFormData] = useState({
     title: game.title,
     platform: game.platform.join(", "),
@@ -35,7 +39,6 @@ export default function GameEditDialog({ game }: GameEditDialogProps) {
     genre: game.genre.join(", "),
     reviewScore: game.reviewScore?.toString(),
   });
-  const router = useRouter();
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
@@ -54,6 +57,8 @@ export default function GameEditDialog({ game }: GameEditDialogProps) {
 
   async function handleUpdate(e: React.SubmitEvent) {
     e.preventDefault();
+    setError("");
+    setIsUpdating(true);
 
     try {
       const base64Image = formData.coverImageUrl
@@ -77,12 +82,14 @@ export default function GameEditDialog({ game }: GameEditDialogProps) {
 
       if (result.success) {
         setIsOpen(false);
-        router.refresh();
+        onSuccess?.();
       } else {
         setError(`An error occured while updating: ${result.error}`);
       }
     } catch (err) {
-      console.error("Failed to move job application: ", err);
+      setError(`An error occured while updating: ${err}`);
+    } finally {
+      setIsUpdating(false);
     }
   }
 
@@ -214,17 +221,26 @@ export default function GameEditDialog({ game }: GameEditDialogProps) {
             </div>
           </div>
 
-          {error && <div>{error}</div>}
+          {error && (
+            <div className="text-destructive bg-destructive/10 rounded-sm p-3 my-3">
+              {error}
+            </div>
+          )}
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsOpen(false)}>
+            <Button
+              disabled={isUpdating}
+              variant="outline"
+              onClick={() => setIsOpen(false)}
+            >
               Cancel
             </Button>
             <Button
               type="submit"
+              disabled={isUpdating}
               className="bg-green-400 hover:bg-green-700 text-black"
             >
-              Update
+              {isUpdating ? "Updating game..." : "Update"}
             </Button>
           </DialogFooter>
         </form>

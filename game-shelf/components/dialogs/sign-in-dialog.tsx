@@ -17,15 +17,14 @@ export default function SignInDialog() {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [isSigningIn, setIsSigningIn] = useState<boolean>(false);
 
   async function handleSignIn(e: React.SubmitEvent) {
     e.preventDefault();
 
     setError("");
-    setLoading(true);
+    setIsSigningIn(true);
 
     try {
       const result = await signIn.email({
@@ -33,14 +32,14 @@ export default function SignInDialog() {
         password,
       });
       if (result.error) {
-        setError(result.error.message ?? "Failed to sign in");
+        setError(`Failed to sign up: ${result.error.message}`);
       } else {
         setOpen(false);
       }
     } catch (err) {
-      setError(`An unexpected error has ocurred: ${err}`);
+      setError(`An error occurred while signing in: ${err}`);
     } finally {
-      setLoading(false);
+      setIsSigningIn(false);
     }
   }
 
@@ -88,9 +87,16 @@ export default function SignInDialog() {
                 />
               </div>
 
+              {error && (
+                <div className="text-destructive bg-destructive/10 rounded-sm p-3 my-3">
+                  {error}
+                </div>
+              )}
+
               <DialogFooter>
                 <Button
                   type="button"
+                  disabled={isSigningIn}
                   variant="outline"
                   onClick={() => setOpen(false)}
                 >
@@ -99,9 +105,9 @@ export default function SignInDialog() {
                 <Button
                   type="submit"
                   className="bg-blue-700 hover:bg-blue-900"
-                  disabled={loading}
+                  disabled={isSigningIn}
                 >
-                  {loading ? "Signing in..." : "Sign In"}
+                  {isSigningIn ? "Signing in..." : "Sign In"}
                 </Button>
               </DialogFooter>
             </div>

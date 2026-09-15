@@ -19,13 +19,13 @@ export default function SignUpDialog() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [isSigningUp, setIsSigningup] = useState<boolean>(false);
 
   async function handleSignUp(e: React.SubmitEvent) {
     e.preventDefault();
 
     setError("");
-    setLoading(true);
+    setIsSigningup(true);
 
     try {
       const result = await signUp.email({
@@ -34,14 +34,14 @@ export default function SignUpDialog() {
         password,
       });
       if (result.error) {
-        setError(result.error.message ?? "Failed to sign up");
+        setError(`Failed to sign up: ${result.error.message}`);
       } else {
         setOpen(false);
       }
     } catch (err) {
-      setError(`An unexpected error has ocurred: ${err}`);
+      setError(`An error occurred while signing up: ${err}`);
     } finally {
-      setLoading(false);
+      setIsSigningup(false);
     }
   }
 
@@ -98,6 +98,12 @@ export default function SignUpDialog() {
                 />
               </div>
 
+              {error && (
+                <div className="text-destructive bg-destructive/10 rounded-sm p-3 my-3">
+                  {error}
+                </div>
+              )}
+
               <DialogFooter>
                 <Button
                   type="button"
@@ -109,9 +115,9 @@ export default function SignUpDialog() {
                 <Button
                   type="submit"
                   className="bg-blue-700 hover:bg-blue-900"
-                  disabled={loading}
+                  disabled={isSigningUp}
                 >
-                  {loading ? "Signing Up..." : "Sign Up"}
+                  {isSigningUp ? "Signing Up..." : "Sign Up"}
                 </Button>
               </DialogFooter>
             </div>

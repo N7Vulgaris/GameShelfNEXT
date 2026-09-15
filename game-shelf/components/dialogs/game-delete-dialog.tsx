@@ -12,34 +12,37 @@ import {
 import { useState } from "react";
 import { Game } from "@/lib/models/models.types";
 import { deleteVideogame } from "@/lib/actions/games";
-import { usePathname, useRouter } from "next/navigation";
 
 interface GameDeleteDialogProps {
   game: Game;
+  onSuccess?: () => void;
 }
 
-export default function GameDeleteDialog({ game }: GameDeleteDialogProps) {
+export default function GameDeleteDialog({
+  game,
+  onSuccess,
+}: GameDeleteDialogProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const router = useRouter();
-  const pathname = usePathname();
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+  const [error, setError] = useState("");
 
   async function handleDelete() {
+    setIsDeleting(true);
+    setError("");
+
     try {
       const result = await deleteVideogame(game._id);
 
       if (result.success) {
         setIsOpen(false);
-        if (pathname === "/management") {
-          router.refresh();
-        } else {
-          router.back();
-          router.refresh();
-        }
+        onSuccess?.();
       } else {
-        console.error("Failed to delete videogame:", result.error);
+        setError(`Failed to delete videogame: ${result.error}`);
       }
     } catch (err) {
-      console.error("Failed to move videogame: ", err);
+      setError(`Failed to delete videogame: ${err}`);
+    } finally {
+      setIsDeleting(false);
     }
   }
 
@@ -62,12 +65,27 @@ export default function GameDeleteDialog({ game }: GameDeleteDialogProps) {
             sure?
           </DialogDescription>
         </DialogHeader>
+
+        {error && (
+          <div className="text-destructive bg-destructive/10 rounded-sm p-3 my-3">
+            {error}
+          </div>
+        )}
+
         <DialogFooter>
-          <Button value="dotted" onClick={() => setIsOpen(false)}>
+          <Button
+            disabled={isDeleting}
+            value="dotted"
+            onClick={() => setIsOpen(false)}
+          >
             Cancel
           </Button>
-          <Button variant="destructive" onClick={() => handleDelete()}>
-            Delete
+          <Button
+            disabled={isDeleting}
+            variant="destructive"
+            onClick={() => handleDelete()}
+          >
+            {isDeleting ? "Deleting game..." : "Delete"}
           </Button>
         </DialogFooter>
       </DialogContent>

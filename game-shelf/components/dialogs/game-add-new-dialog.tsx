@@ -14,7 +14,6 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { ChangeEvent, useState } from "react";
 import { createVideogame } from "@/lib/actions/games";
-import { useRouter } from "next/navigation";
 
 const INITIAL_FORM_DATA = {
   title: "",
@@ -28,12 +27,15 @@ const INITIAL_FORM_DATA = {
   reviewScore: "",
 };
 
-export default function GameAddNewDialog() {
+interface GameAddNewDialogProps {
+  onSuccess: () => void;
+}
+
+export default function GameAddNewDialog({ onSuccess }: GameAddNewDialogProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [formData, setFormData] = useState(INITIAL_FORM_DATA);
-  const [loading, setLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
   const [error, setError] = useState("");
-  const router = useRouter();
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -52,7 +54,7 @@ export default function GameAddNewDialog() {
 
   async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
-    setLoading(true);
+    setIsUploading(true);
     setError("");
 
     try {
@@ -83,14 +85,14 @@ export default function GameAddNewDialog() {
       if (result.success) {
         setFormData(INITIAL_FORM_DATA);
         setIsOpen(false);
-        router.refresh();
+        onSuccess?.();
       } else {
         setError(`Failed to create videogame: ${result.error}`);
       }
     } catch (err) {
       setError(`An unexpected error ocurred: ${err}`);
     } finally {
-      setLoading(false);
+      setIsUploading(false);
     }
   }
 
@@ -227,17 +229,26 @@ export default function GameAddNewDialog() {
             </div>
           </div>
 
-          {error && <div>{error}</div>}
+          {error && (
+            <div className="text-destructive bg-destructive/10 rounded-sm p-3 my-3">
+              {error}
+            </div>
+          )}
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsOpen(false)}>
+            <Button
+              disabled={isUploading}
+              variant="outline"
+              onClick={() => setIsOpen(false)}
+            >
               Cancel
             </Button>
             <Button
               type="submit"
+              disabled={isUploading}
               className="bg-green-400 hover:bg-green-700 text-black"
             >
-              Add new
+              {isUploading ? "Uploading game..." : "Add new"}
             </Button>
           </DialogFooter>
         </form>

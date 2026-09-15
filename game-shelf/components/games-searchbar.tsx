@@ -11,7 +11,7 @@ import {
 import { Button } from "./ui/button";
 import { useSession } from "@/lib/auth/auth-client";
 import GameAddNewDialog from "./dialogs/game-add-new-dialog";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface GameSearchbarProps {
   onSearch: (title: string) => void;
@@ -24,6 +24,7 @@ export default function GamesSearchbar({
 }: GameSearchbarProps) {
   const session = useSession();
   const pathname = usePathname();
+  const router = useRouter();
 
   return (
     <div className="flex flex-row w-full gap-2 h-12 mb-6 border-gray-200 rounded-2xl sticky top-17.5">
@@ -67,7 +68,11 @@ export default function GamesSearchbar({
         </DropdownMenuContent>
       </DropdownMenu>
       {session.data?.user.role === "admin" && pathname !== "/viewGames" && (
-        <GameAddNewDialog />
+        <GameAddNewDialog
+          onSuccess={() => {
+            router.refresh();
+          }}
+        />
       )}
     </div>
   );

@@ -5,7 +5,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen mx-auto container">
       <div className="flex flex-col items-center justify-center font-semibold">
         <Image
-          className="my-2 shadow-xl w-full max-w-4xl h-auto"
+          className="my-2 shadow-xl w-[60%] max-w-4xl h-auto"
           loading="eager"
           src="/images/gameBanner.jpg"
           alt="Games"
