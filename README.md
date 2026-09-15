@@ -6,7 +6,9 @@
   <img src="https://img.shields.io/badge/MongoDB-Atlas-4EA94B?style=for-the-badge&logo=mongodb" alt="MongoDB" />
 </p>
 
-Game Shelf is a modern game discovery and catalog management app built with Next.js. It helps users browse a library of games, filter by platform and genre, and discover new titles through a lightweight recommendation quiz. Admin users can manage the catalog by adding, editing, and deleting game entries.
+Game Shelf NEXT is a modern game discovery and catalog management app built with Next.js. It helps users browse a library of games, filter by platform and genre, and test their game knowledge through a lightweight quiz. Admin users can manage the catalog by adding, editing, and deleting game entries.
+
+It also serves as a before and after comparison with **The Game Shelf**, an older version of the same concept (https://github.com/N7Vulgaris/TheGameShelf)
 
 ## Overview
 
@@ -18,7 +20,7 @@ This project combines a responsive front end with a MongoDB-backed data layer an
 - Filter results by title, developer, publisher, genre, and platform
 - Sort by newest, oldest, and alphabetical order
 - Sign in and sign up with email/password authentication
-- Access a quiz experience for personalized game discovery
+- Access a quiz experience to test game knowledge
 - Manage games through an admin dashboard
 - Store game metadata in MongoDB
 - Use Cloudinary for cover images
@@ -64,40 +66,8 @@ game-shelf/
 
 ## Getting Started
 
-### Prerequisites
-
-- Node.js 18+
-- npm
-- MongoDB instance or MongoDB Atlas connection string
-
-### Installation
-
-1. Clone the repository
-
-   ```bash
-   git clone <your-repo-url>
-   cd game-shelf
-   ```
-
-2. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-3. Create a `.env.local` file and configure your environment variables
-
-   ```bash
-   MONGODB_URI=your_mongodb_connection_string
-   ```
-
-4. Run the development server
-
-   ```bash
-   npm run dev
-   ```
-
-5. Open http://localhost:3000 in your browser
+### How to run
+(Will add a link to a deployed version)
 
 ## Available Scripts
 
@@ -108,14 +78,6 @@ npm run start   # run production build
 npm run lint    # run ESLint checks
 ```
 
-## Environment Variables
-
-| Variable      | Required | Description                                               |
-| ------------- | -------- | --------------------------------------------------------- |
-| `MONGODB_URI` | Yes      | MongoDB connection string used by the app and auth system |
-
-If additional auth or media configuration is added later, document it here.
-
 ## Usage
 
 - Visit the home page to see the landing experience.
@@ -123,10 +85,9 @@ If additional auth or media configuration is added later, document it here.
 - Sign up or sign in to unlock quiz-based discovery.
 - Use the management panel to add or update entries if you have admin access.
 
-## Contributing
+## Things to improve and features to add
 
-Contributions are welcome. If you want to improve the app, feel free to open an issue or submit a pull request.
-
-## License
-
-This project is currently unlicensed unless otherwise specified.
+- General UI polish
+- Better mobile responsiveness
+- A detailed videogame view
+- Allow the user to add games to a list of favorites
