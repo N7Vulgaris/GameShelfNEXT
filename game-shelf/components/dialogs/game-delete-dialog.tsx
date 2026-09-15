@@ -12,7 +12,7 @@ import {
 import { useState } from "react";
 import { Game } from "@/lib/models/models.types";
 import { deleteVideogame } from "@/lib/actions/games";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface GameDeleteDialogProps {
   game: Game;
@@ -20,8 +20,8 @@ interface GameDeleteDialogProps {
 
 export default function GameDeleteDialog({ game }: GameDeleteDialogProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
   const router = useRouter();
+  const pathname = usePathname();
 
   async function handleDelete() {
     try {
@@ -29,7 +29,12 @@ export default function GameDeleteDialog({ game }: GameDeleteDialogProps) {
 
       if (result.success) {
         setIsOpen(false);
-        router.refresh();
+        if (pathname === "/management") {
+          router.refresh();
+        } else {
+          router.back();
+          router.refresh();
+        }
       } else {
         console.error("Failed to delete videogame:", result.error);
       }

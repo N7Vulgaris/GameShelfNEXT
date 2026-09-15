@@ -4,17 +4,20 @@ import { Game } from "@/lib/models/models.types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ImageIcon } from "lucide-react";
+import GameEditAndDelete from "./game-edit-delete";
+import { useSession } from "@/lib/auth/auth-client";
 
 interface GameDetailViewProps {
   game: Game;
 }
 
 export default function GameDetailView({ game }: GameDetailViewProps) {
+  const session = useSession();
   const router = useRouter();
 
   return (
-    <main className="mx-auto mt-16 w-full max-w-5xl p-4">
+    <div className="mx-auto mt-16 w-full max-w-5xl p-4 bg-gray-100 border rounded-2xl shadow-md">
       <Button type="button" onClick={() => router.back()} className="mb-6 flex">
         <ArrowLeft />
         Back to games
@@ -30,7 +33,8 @@ export default function GameDetailView({ game }: GameDetailViewProps) {
               className="object-cover"
             />
           ) : (
-            <div className="flex h-full items-center justify-center">
+            <div className="flex flex-col h-full items-center justify-center">
+              <ImageIcon className="w-auto h-[50%]" />
               No image
             </div>
           )}
@@ -67,6 +71,12 @@ export default function GameDetailView({ game }: GameDetailViewProps) {
           </dl>
         </section>
       </div>
-    </main>
+
+      {session.data?.user.role === "admin" && (
+        <div>
+          <GameEditAndDelete game={game} />
+        </div>
+      )}
+    </div>
   );
 }
