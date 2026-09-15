@@ -14,7 +14,7 @@ interface GameCardProps {
 export default function GameCard({ game, canManage }: GameCardProps) {
   return (
     <div className="flex h-full flex-col border-2 rounded-2xl border-gray-300 p-3">
-      <Link href={`/games/${game._id}`} className="flex flex-1 flex-col">
+      <Link href={`/games/${game._id}`} className="flex flex-1 flex-col mb-2">
         {game.coverImageUrl ? (
           <div className="relative h-80 w-full">
             <Image
