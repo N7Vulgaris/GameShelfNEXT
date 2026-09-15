@@ -91,3 +91,4 @@ npm run lint    # run ESLint checks
 - Better mobile responsiveness
 - A detailed videogame view
 - Allow the user to add games to a list of favorites
+- Switch from State Lifting to URL Search parameters when searching and sorting games
