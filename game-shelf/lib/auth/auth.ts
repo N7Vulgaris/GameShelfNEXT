@@ -23,6 +23,20 @@ const trustedOrigins = [
 export const auth = betterAuth({
   baseURL: authBaseURL,
   trustedOrigins,
+  rateLimit: {
+    window: 60,
+    max: 100,
+    customRules: {
+      "/sign-in/email": {
+        window: 60,
+        max: 5,
+      },
+      "/sign-up/email": {
+        window: 60 * 60,
+        max: 10,
+      },
+    },
+  },
   database: mongodbAdapter(db, {
     client,
   }),

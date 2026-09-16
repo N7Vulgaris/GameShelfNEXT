@@ -15,6 +15,8 @@ import { Input } from "../ui/input";
 import { ChangeEvent, useState } from "react";
 import { createVideogame } from "@/lib/actions/games";
 
+const MAX_COVER_IMAGE_BYTES = 5 * 1024 * 1024;
+
 const INITIAL_FORM_DATA = {
   title: "",
   platform: "",
@@ -39,7 +41,16 @@ export default function GameAddNewDialog({ onSuccess }: GameAddNewDialogProps) {
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setFormData({ ...formData, coverImageUrl: e.target.files[0] });
+      const file = e.target.files[0];
+
+      if (file.size > MAX_COVER_IMAGE_BYTES) {
+        setError("Cover image must be 5 MB or smaller");
+        e.target.value = "";
+        return;
+      }
+
+      setError("");
+      setFormData({ ...formData, coverImageUrl: file });
     }
   };
 

@@ -1,6 +1,10 @@
 import { getSession } from "../auth/auth";
 import { v2 as cloudinary } from "cloudinary";
 
+const MAX_COVER_IMAGE_BYTES = 5 * 1024 * 1024;
+const SUPPORTED_COVER_IMAGE_PATTERN =
+  /^data:image\/(?:jpeg|png|webp|gif);base64,/i;
+
 export interface VideoGameData {
   title: string;
   platform: string[];
@@ -14,7 +18,14 @@ export interface VideoGameData {
 }
 
 export function isDataImageUrl(value?: string) {
-  return Boolean(value && value.startsWith("data:image"));
+  return Boolean(value && SUPPORTED_COVER_IMAGE_PATTERN.test(value));
+}
+
+function getBase64ImageSize(value: string) {
+  const base64 = value.slice(value.indexOf(",") + 1);
+  const padding = base64.endsWith("==") ? 2 : base64.endsWith("=") ? 1 : 0;
+
+  return Math.floor((base64.length * 3) / 4) - padding;
 }
 
 export function normalizeArray(values?: string[]) {
@@ -86,11 +97,19 @@ export async function ensureAdminAccess(): Promise<{
 }
 
 export async function uploadCoverImageIfNeeded(image?: string) {
-  if (!image || !isDataImageUrl(image)) {
+  if (!image) {
     return {
       coverImageUrl: undefined,
       coverImageId: undefined,
     };
+  }
+
+  if (!isDataImageUrl(image)) {
+    throw new Error("Cover image must be a JPEG, PNG, WebP, or GIF");
+  }
+
+  if (getBase64ImageSize(image) > MAX_COVER_IMAGE_BYTES) {
+    throw new Error("Cover image must be 5 MB or smaller");
   }
 
   const uploadResult = await cloudinary.uploader.upload(image, {

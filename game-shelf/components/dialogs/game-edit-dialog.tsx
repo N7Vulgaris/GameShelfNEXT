@@ -17,6 +17,8 @@ import { ChangeEvent, useState } from "react";
 import { Game } from "@/lib/models/models.types";
 import { updateVideogame } from "@/lib/actions/games";
 
+const MAX_COVER_IMAGE_BYTES = 5 * 1024 * 1024;
+
 interface GameEditDialogProps {
   game: Game;
   onSuccess: () => void;
@@ -42,7 +44,16 @@ export default function GameEditDialog({
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
-      setFormData({ ...formData, coverImageUrl: e.target.files[0] });
+      const file = e.target.files[0];
+
+      if (file.size > MAX_COVER_IMAGE_BYTES) {
+        setError("Cover image must be 5 MB or smaller");
+        e.target.value = "";
+        return;
+      }
+
+      setError("");
+      setFormData({ ...formData, coverImageUrl: file });
     }
   };
 
