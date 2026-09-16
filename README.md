@@ -58,6 +58,8 @@ Game Shelf is a full-stack game discovery and catalog management application. It
 
 ### Installation
 
+(Deploy the project and include a link here)
+
 From the repository root:
 
 ```bash
