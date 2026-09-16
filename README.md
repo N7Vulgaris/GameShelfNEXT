@@ -149,4 +149,3 @@ npm run lint    # Run ESLint checks
 - Move catalog search and sorting state into URL search parameters
 - Continue improving mobile responsiveness and visual polish
 - Let admins add / manage questions in the quiz
-- Add standardized choices whem selecting genre and platform in game creation / updating

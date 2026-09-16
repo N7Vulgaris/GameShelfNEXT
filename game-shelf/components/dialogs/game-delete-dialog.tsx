@@ -1,4 +1,4 @@
-import { DeleteIcon } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -52,7 +52,7 @@ export default function GameDeleteDialog({
         render={(props) => (
           <Button {...props} className="bg-destructive hover:bg-destructive/50">
             Delete
-            <DeleteIcon />
+            <Trash2 />
           </Button>
         )}
       ></DialogTrigger>

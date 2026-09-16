@@ -12,20 +12,22 @@ import {
 } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import { MultiSelect } from "../ui/multi-select";
 import { ChangeEvent, useState } from "react";
 import { createVideogame } from "@/lib/actions/games";
+import { GENRE_OPTIONS, PLATFORM_OPTIONS } from "@/lib/game-options";
 
 const MAX_COVER_IMAGE_BYTES = 5 * 1024 * 1024;
 
 const INITIAL_FORM_DATA = {
   title: "",
-  platform: "",
+  platform: [] as string[],
   releaseDate: "",
   coverImageUrl: null as File | null,
   coverImageId: "",
   developer: "",
   publisher: "",
-  genre: "",
+  genre: [] as string[],
   reviewScore: "",
 };
 
@@ -78,14 +80,8 @@ export default function GameAddNewDialog({ onSuccess }: GameAddNewDialogProps) {
         title: formData.title,
         developer: formData.developer,
         publisher: formData.publisher,
-        platform: formData.platform
-          .split(",")
-          .map((plat) => plat.trim())
-          .filter((plat) => plat.length > 0),
-        genre: formData.genre
-          .split(",")
-          .map((gen) => gen.trim())
-          .filter((gen) => gen.length > 0),
+        platform: formData.platform,
+        genre: formData.genre,
         releaseDate: new Date(formData.releaseDate),
         reviewScore: Number(formData.reviewScore),
         coverImageUrl: base64Image || undefined,
@@ -166,17 +162,14 @@ export default function GameAddNewDialog({ onSuccess }: GameAddNewDialogProps) {
                   }
                 ></Input>
               </div>
-              <div className="flex flex-col gap-y-2">
-                <Label htmlFor="platform">Platform(s) *</Label>
-                <Input
-                  id="platform"
-                  required
-                  value={formData.platform}
-                  onChange={(e) =>
-                    setFormData({ ...formData, platform: e.target.value })
-                  }
-                ></Input>
-              </div>
+              <MultiSelect
+                id="platform"
+                label="Platform(s) *"
+                options={PLATFORM_OPTIONS}
+                selected={formData.platform}
+                onChange={(platform) => setFormData({ ...formData, platform })}
+                required
+              />
             </div>
             <div className="flex flex-col gap-y-2">
               <Label htmlFor="releaseDate">Release date *</Label>
@@ -190,16 +183,14 @@ export default function GameAddNewDialog({ onSuccess }: GameAddNewDialogProps) {
                 }
               ></Input>
             </div>
-            <div className="flex flex-col gap-y-2">
-              <Label htmlFor="genre">Genre(s)</Label>
-              <Input
-                id="genre"
-                value={formData.genre}
-                onChange={(e) =>
-                  setFormData({ ...formData, genre: e.target.value })
-                }
-              ></Input>
-            </div>
+            <MultiSelect
+              id="genre"
+              label="Genre(s) *"
+              options={GENRE_OPTIONS}
+              selected={formData.genre}
+              onChange={(genre) => setFormData({ ...formData, genre })}
+              required
+            />
             <div className="flex flex-col gap-y-2">
               <Label htmlFor="review">Review score</Label>
               <Input
