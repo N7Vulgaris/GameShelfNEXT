@@ -8,8 +8,16 @@ import { redirect } from "next/navigation";
 
 const client = new MongoClient(process.env.MONGODB_URI!);
 const db = client.db();
+const authBaseURL =
+  process.env.BETTER_AUTH_URL ?? process.env.NEXT_PUBLIC_BETTER_AUTH_URL;
+const trustedOrigins = [
+  authBaseURL,
+  process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined,
+].filter((origin): origin is string => Boolean(origin));
 
 export const auth = betterAuth({
+  baseURL: authBaseURL,
+  trustedOrigins,
   database: mongodbAdapter(db, {
     client,
   }),
