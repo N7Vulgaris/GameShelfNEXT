@@ -115,7 +115,7 @@ export default function GameEditDialog({
         )}
       ></DialogTrigger>
 
-      <DialogContent>
+      <DialogContent className="min-w-0">
         <DialogHeader>
           <DialogTitle>Edit game:</DialogTitle>
 
@@ -124,7 +124,7 @@ export default function GameEditDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleUpdate}>
+        <form className="min-w-0" onSubmit={handleUpdate}>
           <div className="flex flex-col gap-y-4">
             <div className="grid grid-cols-2 gap-2">
               <div className="flex flex-col gap-y-2">

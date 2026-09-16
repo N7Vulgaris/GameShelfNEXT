@@ -41,7 +41,7 @@ export function MultiSelect({
   }
 
   return (
-    <div className="flex flex-col gap-y-2">
+    <div className="flex min-w-0 flex-col gap-y-2">
       <Label htmlFor={id}>{label}</Label>
       <DropdownMenu>
         <DropdownMenuTrigger
@@ -51,19 +51,19 @@ export function MultiSelect({
               id={id}
               type="button"
               variant="outline"
-              className="w-full justify-between font-normal"
+              className="w-full max-w-full min-w-0 justify-between gap-2 overflow-hidden font-normal"
               aria-required={required}
             >
-              <span className="truncate text-left">
+              <span className="min-w-0 flex-1 truncate text-left">
                 {selected.length
                   ? selected.join(", ")
                   : `Select ${label.toLowerCase()}`}
               </span>
-              <ChevronDown />
+              <ChevronDown className="shrink-0" />
             </Button>
           )}
         />
-        <DropdownMenuContent className="max-h-64 w-(--anchor-width)">
+        <DropdownMenuContent className="max-h-64 w-(--anchor-width) max-w-[min(24rem,calc(100vw-2rem))]">
           {availableOptions.map((option) => (
             <DropdownMenuCheckboxItem
               key={option}
