@@ -144,7 +144,6 @@ npm run lint    # Run ESLint checks
 
 ## Roadmap
 
-- Add dedicated game detail pages
 - Let users save games to a favorites list
 - Move catalog search and sorting state into URL search parameters
 - Continue improving mobile responsiveness and visual polish
