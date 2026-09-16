@@ -50,15 +50,51 @@ Game Shelf is a full-stack game discovery and catalog management application. It
 
 ## Getting Started
 
-Link to the deployed project: https://game-shelf-next.vercel.app/
+Game Shelf is a full-stack game discovery and catalog management app built to demonstrate a modern Next.js workflow with authentication, database-backed CRUD, media handling, and an interactive quiz experience.
 
-Admin account for testing:
-Email: `admin@admin.com`
-Password: `adminPassword`
+### Live Demo
 
-Normal user account (if you don't want to create your own):
-Email: `johnny@test.com`
-Password: `test123456`
+Production app: https://game-shelf-next.vercel.app/
+
+Demo accounts for quick testing:
+
+- Admin account
+  - Email: `admin@admin.com`
+  - Password: `adminPassword`
+- Standard user account
+  - Email: `johnny@test.com`
+  - Password: `test123456`
+
+### Run Locally
+
+1. Clone the repository and install dependencies:
+
+```bash
+git clone https://github.com/your-username/GameShelfNEXT.git
+cd game-shelf
+npm install
+```
+
+2. Start the app:
+
+```bash
+npm run dev
+```
+
+3. Open the project in your browser:
+
+```text
+http://localhost:3000
+```
+
+### What You Can Do
+
+- Browse and search a catalog of games with cover art and metadata
+- Filter and sort by genre, platform, publisher, and release date
+- Sign in with email/password authentication
+- Manage catalog content through an admin dashboard
+- Upload and remove game cover images via Cloudinary
+- Explore the game catalog through a lightweight quiz flow
 
 ## Available Routes
 
