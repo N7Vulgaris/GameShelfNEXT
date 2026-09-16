@@ -61,11 +61,7 @@ export default function SignInDialog() {
               Sign in using your credentials
             </DialogDescription>
           </div>
-          {error && (
-            <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
-              {error}
-            </div>
-          )}
+
           <form className="space-y-4" onSubmit={handleSignIn}>
             <div className="space-y-4">
               <div className="space-y-2">

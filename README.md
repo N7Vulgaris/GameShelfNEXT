@@ -20,21 +20,13 @@ Game Shelf is a full-stack game discovery and catalog management application. It
 
 ## Screenshots
 
-Add project screenshots to `game-shelf/public/images/screenshots/` and replace the placeholders below. Recommended captures: the landing page, the searchable catalog, and the management or quiz experience.
-
 <table>
   <tr>
-    <td align="center"><strong>Home page</strong><br><em>Add home.png</em></td>
-    <td align="center"><strong>Game catalog</strong><br><em>Add catalog.png</em></td>
-    <td align="center"><strong>Quiz or management</strong><br><em>Add quiz-or-management.png</em></td>
+    <td align="center"><strong>Home page</strong><br><img src="game-shelf/public/images/homePage.png" alt="Game Shelf home page" width="320" /></td>
+    <td align="center"><strong>Game catalog</strong><br><img src="game-shelf/public/images/gameCatalog.png" alt="Game Shelf catalog view" width="320" /></td>
+    <td align="center"><strong>Management</strong><br><img src="game-shelf/public/images/management.png" alt="Game Shelf management view" width="320" /></td>
   </tr>
 </table>
-
-<!-- Screenshot placeholders:
-- game-shelf/public/images/screenshots/home.png
-- game-shelf/public/images/screenshots/catalog.png
-- game-shelf/public/images/screenshots/quiz-or-management.png
--->
 
 ## Features
 
@@ -142,3 +134,4 @@ npm run lint    # Run ESLint checks
 - Move catalog search and sorting state into URL search parameters
 - Continue improving mobile responsiveness and visual polish
 - Let admins add / manage questions in the quiz
+- Add standardized choices whem selecting genre and platform in game creation / updating
