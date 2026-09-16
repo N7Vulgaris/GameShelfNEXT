@@ -24,7 +24,7 @@ Game Shelf is a full-stack game discovery and catalog management application. It
   <tr>
     <td align="center"><strong>Home page</strong><br><img src="game-shelf/public/images/homePage.png" alt="Game Shelf home page" width="320" /></td>
     <td align="center"><strong>Game catalog</strong><br><img src="game-shelf/public/images/gameCatalog.png" alt="Game Shelf catalog view" width="320" /></td>
-    <td align="center"><strong>Management</strong><br><img src="game-shelf/public/images/management.png" alt="Game Shelf management view" width="320" /></td>
+<td align="center"><strong>Management</strong><br><img src="./game-shelf/public/images/management.png" alt="Game Shelf management view" width="320" /></td>
   </tr>
 </table>
 
