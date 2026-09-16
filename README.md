@@ -50,38 +50,15 @@ Game Shelf is a full-stack game discovery and catalog management application. It
 
 ## Getting Started
 
-### Prerequisites
+Link to the deployed project: https://game-shelf-next.vercel.app/
 
-- Node.js 20 or newer
-- A MongoDB database, such as MongoDB Atlas
-- A Cloudinary account for cover image uploads
+Admin account for testing:
+Email: `admin@admin.com`
+Password: `adminPassword`
 
-### Installation
-
-(Deploy the project and include a link here)
-
-From the repository root:
-
-```bash
-cd game-shelf
-npm install
-```
-
-Create `game-shelf/.env.local` with the values for your local environment:
-
-```env
-MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>/<database>
-NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:3000
-CLOUDINARY_URL=cloudinary://<api_key>:<api_secret>@<cloud_name>
-```
-
-Start the development server:
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Normal user account (if you don't want to create your own):
+Email: `johnny@test.com`
+Password: `test123456`
 
 ## Available Routes
 
